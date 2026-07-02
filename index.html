@@ -13,7 +13,10 @@
 <textarea id="text" placeholder="Type or paste your text here..."
 style="width:90%; height:200px; padding:10px; font-size:16px;"
 oninput="countWords()"></textarea>
+<br><br>
 
+<button onclick="copyText()">📋 Copy Text</button>
+<button onclick="clearText()">🗑️ Clear</button>
 <h3>Words: <span id="words">0</span></h3>
 <h3>Characters: <span id="characters">0</span></h3>
 
@@ -24,6 +27,17 @@ let words=text.trim()===""?0:text.trim().split(/\s+/).length;
 document.getElementById("words").innerHTML=words;
 document.getElementById("characters").innerHTML=text.length;
 }
+function copyText(){
+  let text = document.getElementById("text");
+  text.select();
+  document.execCommand("copy");
+  alert("Text Copied!");
+}
+
+function clearText(){
+  document.getElementById("text").value = "";
+  countWords();
+} 
 </script>
 
 </body>

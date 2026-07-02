@@ -28,18 +28,24 @@ button:hover{
 </div>
 
 <br>
+<div style="max-width:700px; margin:auto; background:white; padding:25px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
 
-<h2>Word Counter Tool</h2>
+<h2>📝 Word Counter Tool</h2>
 
 <textarea id="text" placeholder="Type or paste your text here..."
 style="width:90%; height:200px; padding:10px; font-size:16px;"
 oninput="countWords()"></textarea>
+
 <br><br>
 
 <button onclick="copyText()">📋 Copy Text</button>
 <button onclick="clearText()">🗑️ Clear</button>
+
 <h3>Words: <span id="words">0</span></h3>
 <h3>Characters: <span id="characters">0</span></h3>
+
+</div>
+
 
 <script>
 function countWords(){

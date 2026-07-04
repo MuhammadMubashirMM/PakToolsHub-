@@ -3,7 +3,7 @@
 <head>
 <title>PakToolsHub - QR Code Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<button onclick="downloadQR()">📥 Download QR Code</button>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
@@ -98,7 +98,21 @@ height:220
 });
 
 }
+function downloadQR(){
 
+let img = document.querySelector("#qrcode img");
+
+if(!img){
+alert("Please generate a QR Code first.");
+return;
+}
+
+let link = document.createElement("a");
+link.href = img.src;
+link.download = "PakToolsHub-QRCode.png";
+link.click();
+
+  }
 </script>
 
 </body>

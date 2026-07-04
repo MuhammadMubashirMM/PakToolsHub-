@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PakToolsHub - Text Case Converter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:700px;
+margin:30px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+textarea{
+width:90%;
+height:180px;
+padding:10px;
+font-size:16px;
+border-radius:8px;
+}
+
+button{
+margin:6px;
+padding:10px 15px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>PakToolsHub</h1>
+<p>Free Online Tools</p>
+</div>
+
+<div class="card">
+
+<h2>🔤 Text Case Converter</h2>
+
+<textarea id="text" placeholder="Enter your text here..."></textarea>
+
+<br><br>
+
+<button onclick="upperCase()">UPPERCASE</button>
+<button onclick="lowerCase()">lowercase</button>
+<button onclick="titleCase()">Title Case</button>
+<button onclick="clearText()">Clear</button>
+
+</div>
+
+<script>
+
+function upperCase(){
+document.getElementById("text").value=
+document.getElementById("text").value.toUpperCase();
+}
+
+function lowerCase(){
+document.getElementById("text").value=
+document.getElementById("text").value.toLowerCase();
+}
+
+function titleCase(){
+
+let text=document.getElementById("text").value.toLowerCase().split(" ");
+
+for(let i=0;i<text.length;i++){
+text[i]=text[i].charAt(0).toUpperCase()+text[i].slice(1);
+}
+
+document.getElementById("text").value=text.join(" ");
+
+}
+
+function clearText(){
+document.getElementById("text").value="";
+}
+
+</

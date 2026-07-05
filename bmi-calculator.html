@@ -52,39 +52,7 @@ margin-top:20px;
 font-size:20px;
 font-weight:bold;
 }
-  async function downloadImage(){
-
-const card = document.querySelector(".card");
-
-const canvas = await html2canvas(card);
-
-const link = document.createElement("a");
-
-link.download = "BMI-Result.png";
-
-link.href = canvas.toDataURL();
-
-link.click();
-
-}
-
-async function downloadPDF(){
-
-const { jsPDF } = window.jspdf;
-
-const card = document.querySelector(".card");
-
-const canvas = await html2canvas(card);
-
-const imgData = canvas.toDataURL("image/png");
-
-const pdf = new jsPDF();
-
-pdf.addImage(imgData,"PNG",10,10,190,0);
-
-pdf.save("BMI-Result.pdf");
-
-}
+  
   .result-card{
 background:#f8fafc;
 border:2px solid #2563eb;
@@ -386,6 +354,39 @@ document.querySelector('button[onclick="resetForm()"]').innerText="Reset";
 }
 
   }
+  async function downloadImage(){
+
+const card = document.querySelector(".card");
+
+const canvas = await html2canvas(card);
+
+const link = document.createElement("a");
+
+link.download = "BMI-Result.png";
+
+link.href = canvas.toDataURL();
+
+link.click();
+
+}
+
+async function downloadPDF(){
+
+const { jsPDF } = window.jspdf;
+
+const card = document.querySelector(".card");
+
+const canvas = await html2canvas(card);
+
+const imgData = canvas.toDataURL("image/png");
+
+const pdf = new jsPDF();
+
+pdf.addImage(imgData,"PNG",10,10,190,0);
+
+pdf.save("BMI-Result.pdf");
+
+}
 </script>
 
 </body>

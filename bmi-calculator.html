@@ -66,15 +66,38 @@ font-weight:bold;
 
 <h2>⚖️ BMI Calculator</h2>
 
-<input type="number" id="weight" placeholder="Weight (kg)">
+<select id="gender">
+<option value="male">👨 Male</option>
+<option value="female">👩 Female</option>
+</select>
 
-<input type="number" id="height" placeholder="Height (cm)">
+<br><br>
+
+<input type="number" id="age" placeholder="Enter Age">
+
+<input type="number" id="weight" placeholder="Weight">
+
+<select id="weightUnit">
+<option value="kg">Kilograms (kg)</option>
+<option value="lb">Pounds (lb)</option>
+</select>
+
+<br><br>
+
+<input type="number" id="height" placeholder="Height">
+
+<select id="unit">
+<option value="cm">Centimeters (cm)</option>
+<option value="m">Meters (m)</option>
+<option value="ft">Feet (ft)</option>
+<option value="in">Inches (in)</option>
+</select>
+
+<br><br>
 
 <button onclick="calculateBMI()">Calculate BMI</button>
 
-<div id="result"></div>
-
-</div>
+<div id="result"></div> 
 
 <script>
 

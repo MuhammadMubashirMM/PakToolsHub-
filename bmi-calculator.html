@@ -149,6 +149,9 @@ box-shadow:0 4px 10px rgba(0,0,0,.1);
 <button onclick="shareFacebook()">📘 Facebook</button>
 
 <button onclick="shareX()">𝕏 X (Twitter)</button>
+  <button onclick="copyResult()">📋 Copy Result</button>
+
+<button onclick="printResult()">🖨️ Print Result</button>
 <div id="result" class="result-card"></div>
   <div style="width:100%;background:#ddd;border-radius:10px;margin-top:20px;">
   <div id="bmiBar" style="width:0%;height:20px;background:#2563eb;border-radius:10px;"></div>
@@ -291,6 +294,54 @@ function shareX(){
 let text = encodeURIComponent(getResultText());
 
 window.open("https://twitter.com/intent/tweet?text=" + text,"_blank");
+
+  }
+  function copyResult(){
+
+let text = document.getElementById("result").innerText;
+
+navigator.clipboard.writeText(text).then(function(){
+
+alert("BMI Result Copied!");
+
+});
+
+}
+
+function printResult(){
+
+let result = document.getElementById("result").innerHTML;
+
+let win = window.open("", "", "width=700,height=700");
+
+win.document.write(`
+<html>
+<head>
+<title>BMI Result</title>
+<style>
+body{
+font-family:Arial;
+padding:30px;
+text-align:center;
+}
+.result{
+border:2px solid #2563eb;
+padding:20px;
+border-radius:10px;
+}
+</style>
+</head>
+<body>
+<h2>PakToolsHub - BMI Result</h2>
+<div class="result">
+${result}
+</div>
+</body>
+</html>
+`);
+
+win.document.close();
+win.print();
 
   }
 

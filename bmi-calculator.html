@@ -96,9 +96,9 @@ font-weight:bold;
 <br><br>
 
 <button onclick="calculateBMI()">Calculate BMI</button>
-
+<button onclick="resetForm()">Reset</button>
 <div id="result"></div> 
-
+</div>
 <script>
 
 function calculateBMI(){
@@ -115,7 +115,18 @@ if(!weight || !height || !age){
 alert("Please fill all fields.");
 return;
 }
+function resetForm(){
 
+document.getElementById("age").value="";
+document.getElementById("weight").value="";
+document.getElementById("height").value="";
+document.getElementById("result").innerHTML="";
+
+document.getElementById("gender").selectedIndex=0;
+document.getElementById("weightUnit").selectedIndex=0;
+document.getElementById("unit").selectedIndex=0;
+
+}
 // Weight conversion
 if(weightUnit=="lb"){
 weight = weight * 0.453592;
@@ -164,13 +175,19 @@ calories = 10*weight + 6.25*(height*100) - 5*age - 161;
 }
 
 calories = Math.round(calories);
+<button onclick="calculateBMI()">Calculate BMI</button>
 
+<div id="result"></div>
+
+</div>
+
+<script>
 document.getElementById("result").innerHTML=
 "<h3>Your BMI: "+bmi+"</h3>" +
 "<p>"+category+"</p>" +
 "<p>🎯 Ideal Weight: "+minWeight+" kg - "+maxWeight+" kg</p>" +
 "<p>🔥 Estimated Daily Calories: "+calories+" kcal/day</p>";
-
+"<p>💡 "+tips+"</p>";
 }
 
 </script>

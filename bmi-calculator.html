@@ -171,6 +171,14 @@ height = height * 0.0254;
 let bmi = (weight / (height * height)).toFixed(1);
 
 let category="";
+  
+
+// Ideal weight
+let minWeight=(18.5*height*height).toFixed(1);
+let maxWeight=(24.9*height*height).toFixed(1);
+
+// Daily Calories (Estimated)
+let calories;
   let tips = "";
 
 if(bmi < 18.5){
@@ -199,13 +207,6 @@ else{
 category="🔴 Obese";
 }
 
-// Ideal weight
-let minWeight=(18.5*height*height).toFixed(1);
-let maxWeight=(24.9*height*height).toFixed(1);
-
-// Daily Calories (Estimated)
-let calories;
-
 if(gender=="male"){
 calories = 10*weight + 6.25*(height*100) - 5*age + 5;
 }else{
@@ -213,9 +214,6 @@ calories = 10*weight + 6.25*(height*100) - 5*age - 161;
 }
 
 calories = Math.round(calories);
-<button onclick="calculateBMI()">Calculate BMI</button>
-
-<div id="result"></div>
 
 </div>
 

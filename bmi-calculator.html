@@ -105,7 +105,14 @@ box-shadow:0 4px 10px rgba(0,0,0,.1);
 <h1>PakToolsHub</h1>
 <p>Free Online Tools</p>
 </div>
+<div style="margin:20px;">
+<label><b>🌍 Language:</b></label>
 
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="ur">اردو</option>
+</select>
+</div>
 <div class="card">
 
 <h2>⚖️ BMI Calculator</h2>
@@ -344,7 +351,41 @@ win.document.close();
 win.print();
 
   }
+function changeLanguage(){
 
+let lang = document.getElementById("language").value;
+
+if(lang=="ur"){
+
+document.querySelector("h2").innerText="⚖️ بی ایم آئی کیلکولیٹر";
+
+document.getElementById("age").placeholder="عمر درج کریں";
+
+document.getElementById("weight").placeholder="وزن درج کریں";
+
+document.getElementById("height").placeholder="قد درج کریں";
+
+document.querySelector('button[onclick="calculateBMI()"]').innerText="حساب کریں";
+
+document.querySelector('button[onclick="resetForm()"]').innerText="ری سیٹ";
+
+}else{
+
+document.querySelector("h2").innerText="⚖️ BMI Calculator";
+
+document.getElementById("age").placeholder="Enter Age";
+
+document.getElementById("weight").placeholder="Weight";
+
+document.getElementById("height").placeholder="Height";
+
+document.querySelector('button[onclick="calculateBMI()"]').innerText="Calculate BMI";
+
+document.querySelector('button[onclick="resetForm()"]').innerText="Reset";
+
+}
+
+  }
 </script>
 
 </body>

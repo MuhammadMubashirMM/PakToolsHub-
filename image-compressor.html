@@ -1,43 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>PakToolsHub - Image Compressor</title>
+</head>
+
+<body>
+
+<h1>PakToolsHub</h1>
+
 <h2>🖼️ Image Compressor</h2>
 
 <input type="file" id="imageInput" accept="image/*">
 
 <br><br>
+<label>Compression Quality</label>
 
+<br><br>
+
+<input type="range" id="quality" min="10" max="100" value="50">
+
+<p id="qualityValue">50%</p>
 <button onclick="compressImage()">Compress Image</button>
 
 <br><br>
 
-<img id="preview" style="max-width:100%;display:none;">
+<img id="preview" style="max-width:300px;display:none;">
 
 <br><br>
 
 <a id="downloadBtn" style="display:none;">Download Image</a>
+<p id="imageInfo"></p>
+<script>
+let quality=document.getElementById("quality");
 
+let qualityValue=document.getElementById("qualityValue");
+
+quality.oninput=function(){
+
+qualityValue.innerHTML=this.value+"%";
+
+}
+// یہاں compressImage() والا function پیسٹ کریں
 function compressImage(){
 
-let file=document.getElementById("imageInput").files[0];
+let file = document.getElementById("imageInput").files[0];
 
 if(!file){
 alert("Please select an image");
 return;
 }
 
-let reader=new FileReader();
+let reader = new FileReader();
 
-reader.onload=function(e){
+reader.onload = function(e){
 
-document.getElementById("preview").src=e.target.result;
-document.getElementById("preview").style.display="block";
+let img = new Image();
 
-let download=document.getElementById("downloadBtn");
+img.src = e.target.result;
 
-download.href=e.target.result;
-download.download="image.jpg";
-download.style.display="inline";
+img.onload = function(){
+
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
+
+canvas.width = img.width;
+canvas.height = img.height;
+
+ctx.drawImage(img,0,0);
+
+let compressed = canvas.toDataURL("image/jpeg", quality.value/100);
+let originalSize = (file.size / 1024).toFixed(2);
+
+let compressedSize = ((compressed.length * 3 / 4) / 1024).toFixed(2);
+
+let saved = (((originalSize - compressedSize) / originalSize) * 100).toFixed(1);
+
+document.getElementById("imageInfo").innerHTML =
+"📁 Original: " + originalSize + " KB<br>" +
+"🗜️ Compressed: " + compressedSize + " KB<br>" +
+"✅ Saved: " + saved + "%";
+document.getElementById("preview").src = compressed;
+document.getElementById("preview").style.display = "block";
+
+let download = document.getElementById("downloadBtn");
+
+download.href = compressed;
+download.download = "compressed-image.jpg";
+download.innerHTML = "⬇️ Download Compressed Image";
+download.style.display = "inline";
+
+}
 
 }
 
 reader.readAsDataURL(file);
 
 }
+</script>
+
+</body>
+</html>

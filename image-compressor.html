@@ -1,0 +1,43 @@
+<h2>🖼️ Image Compressor</h2>
+
+<input type="file" id="imageInput" accept="image/*">
+
+<br><br>
+
+<button onclick="compressImage()">Compress Image</button>
+
+<br><br>
+
+<img id="preview" style="max-width:100%;display:none;">
+
+<br><br>
+
+<a id="downloadBtn" style="display:none;">Download Image</a>
+
+function compressImage(){
+
+let file=document.getElementById("imageInput").files[0];
+
+if(!file){
+alert("Please select an image");
+return;
+}
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+document.getElementById("preview").src=e.target.result;
+document.getElementById("preview").style.display="block";
+
+let download=document.getElementById("downloadBtn");
+
+download.href=e.target.result;
+download.download="image.jpg";
+download.style.display="inline";
+
+}
+
+reader.readAsDataURL(file);
+
+}

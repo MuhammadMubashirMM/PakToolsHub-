@@ -85,6 +85,14 @@ pdf.addImage(imgData,"PNG",10,10,190,0);
 pdf.save("BMI-Result.pdf");
 
 }
+  .result-card{
+background:#f8fafc;
+border:2px solid #2563eb;
+border-radius:12px;
+padding:20px;
+margin-top:20px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+  }
 </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -136,7 +144,12 @@ pdf.save("BMI-Result.pdf");
   <button onclick="downloadImage()">📷 Download Image</button>
 
 <button onclick="downloadPDF()">📄 Download PDF</button>
-<div id="result"></div> 
+  <button onclick="shareWhatsApp()">📱 WhatsApp</button>
+
+<button onclick="shareFacebook()">📘 Facebook</button>
+
+<button onclick="shareX()">𝕏 X (Twitter)</button>
+<div id="result" class="result-card"></div>
   <div style="width:100%;background:#ddd;border-radius:10px;margin-top:20px;">
   <div id="bmiBar" style="width:0%;height:20px;background:#2563eb;border-radius:10px;"></div>
   </div>
@@ -251,6 +264,35 @@ else{
 "<p>🔥 Estimated Daily Calories: "+calories+" kcal/day</p>";
 "<p>💡 "+tips+"</p>";
 }
+  function getResultText(){
+
+return document.getElementById("result").innerText;
+
+}
+
+function shareWhatsApp(){
+
+let text = encodeURIComponent(getResultText());
+
+window.open("https://wa.me/?text=" + text,"_blank");
+
+}
+
+function shareFacebook(){
+
+let url = encodeURIComponent(window.location.href);
+
+window.open("https://www.facebook.com/sharer/sharer.php?u=" + url,"_blank");
+
+}
+
+function shareX(){
+
+let text = encodeURIComponent(getResultText());
+
+window.open("https://twitter.com/intent/tweet?text=" + text,"_blank");
+
+  }
 
 </script>
 

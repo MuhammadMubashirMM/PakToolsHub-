@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PakToolsHub - Percentage Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:500px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+input,select{
+width:90%;
+padding:12px;
+margin:10px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+#result{
+margin-top:25px;
+padding:20px;
+background:#f8fafc;
+border:2px solid #2563eb;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+font-size:18px;
+line-height:1.8;
+display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>PakToolsHub</h1>
+<p>Free Online Tools</p>
+</div>
+  <div style="margin:20px;">
+<label><b>🌍 Language:</b></label>
+
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="ur">اردو</option>
+</select>
+</div>
+
+<div class="card">
+
+<h2 id="title">📊 Percentage Calculator</h2>
+
+<select id="type">
+<option value="percentOf">What is X% of Y?</option>
+<option value="xOfY">X is what % of Y?</option>
+<option value="increase">Percentage Increase</option>
+<option value="decrease">Percentage Decrease</option>
+<option value="discount">Discount Calculator</option>
+<option value="tax">GST / Tax Calculator</option>
+</select>
+
+<input type="number" id="num1" placeholder="First Number">
+
+<input type="number" id="num2" placeholder="Second Number">
+
+<button onclick="calculate()">Calculate</button>
+
+<button onclick="resetForm()">Reset</button>
+<button onclick="copyResult()">📋 Copy Result</button>
+<button onclick="printResult()">🖨️ Print Result</button>
+<button onclick="shareResult()">📤 Share Result</button>
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function calculate(){
+
+let type = document.getElementById("type").value;
+
+let a = parseFloat(document.getElementById("num1").value);
+
+let b = parseFloat(document.getElementById("num2").value);
+
+if(isNaN(a) || isNaN(b)){
+    alert("Please enter both numbers.");
+    return;
+}
+
+let result = "";
+
+if(type=="percentOf"){
+
+    result = (a*b/100).toFixed(2);
+document.getElementById("result").style.display="block";
+
+document.getElementById("result").innerHTML=
+"<h3 style='color:#2563eb;'>📊 Calculation Result</h3>" +
+"<hr>" +
+    a + "% of " + b + " = <b>" + result + "</b>";
+
+}
+
+else if(type=="xOfY"){
+
+    result = ((a/b)*100).toFixed(2);
+
+    document.getElementById("result").innerHTML =
+    a + " is <b>" + result + "%</b> of " + b;
+
+}
+
+else if(type=="increase"){
+
+    result = b + (a*b/100);
+
+    document.getElementById("result").innerHTML =
+    a + "% increase on " + b + " = <b>" + result.toFixed(2) + "</b>";
+
+}
+
+else if(type=="decrease"){
+
+    result = b - (a*b/100);
+
+    document.getElementById("result").innerHTML =
+    a + "% decrease from " + b + " = <b>" + result.toFixed(2) + "</b>";
+
+}
+
+else if(type=="discount"){
+
+    result = b - (a*b/100);
+
+    document.getElementById("result").innerHTML =
+    "Final Price after " + a + "% Discount = <b>" + result.toFixed(2) + "</b>";
+
+}
+
+else if(type=="tax"){
+
+    result = b + (a*b/100);
+
+    document.getElementById("result").innerHTML =
+    "Price after " + a + "% GST/Tax = <b>" + result.toFixed(2) + "</b>";
+
+}
+
+}
+
+function resetForm(){
+
+document.getElementById("num1").value="";
+document.getElementById("num2").value="";
+document.getElementById("result").innerHTML="";
+document.getElementById("type").selectedIndex=0;
+  document.getElementById("result").style.display="none";
+
+}
+function copyResult(){
+
+let text = document.getElementById("result").innerText;
+
+if(text==""){
+    alert("No result to copy.");
+    return;
+}
+
+navigator.clipboard.writeText(text).then(function(){
+
+    alert("Result Copied!");
+
+});
+
+  }
+  function printResult(){
+
+let result = document.getElementById("result").innerHTML;
+
+if(result==""){
+    alert("No result to print.");
+    return;
+}
+
+let win = window.open("", "", "width=700,height=700");
+
+win.document.write(`
+<html>
+<head>
+<title>Percentage Result</title>
+<style>
+body{
+font-family:Arial;
+padding:30px;
+text-align:center;
+}
+</style>
+</head>
+<body>
+
+<h2>PakToolsHub</h2>
+
+${result}
+
+</body>
+</html>
+`);
+
+win.document.close();
+win.print();
+
+  }
+  async function shareResult(){
+
+let text = document.getElementById("result").innerText;
+
+if(text==""){
+alert("No result to share.");
+return;
+}
+
+if(navigator.share){
+
+await navigator.share({
+title:"Percentage Calculator Result",
+text:text
+});
+
+}else{
+
+alert("Sharing is not supported on this device.");
+
+}
+
+  }
+  function changeLanguage(){
+
+let lang=document.getElementById("language").value;
+
+if(lang=="ur"){
+
+document.getElementById("title").innerText="📊 فیصد کیلکولیٹر";
+
+document.getElementById("num1").placeholder="پہلا نمبر درج کریں";
+
+document.getElementById("num2").placeholder="دوسرا نمبر درج کریں";
+
+document.querySelector('button[onclick="calculate()"]').innerText="حساب کریں";
+
+document.querySelector('button[onclick="resetForm()"]').innerText="ری سیٹ";
+
+}else{
+
+document.getElementById("title").innerText="📊 Percentage Calculator";
+
+document.getElementById("num1").placeholder="First Number";
+
+document.getElementById("num2").placeholder="Second Number";
+
+document.querySelector('button[onclick="calculate()"]').innerText="Calculate";
+
+document.querySelector('button[onclick="resetForm()"]').innerText="Reset";
+
+}
+
+      }
+</script>
+
+</body>
+</html>

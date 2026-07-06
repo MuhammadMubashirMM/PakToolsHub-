@@ -55,6 +55,9 @@ color:#2563eb;
 }
 
 </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
@@ -103,7 +106,9 @@ color:#2563eb;
 <button onclick="resetForm()">🔄 Reset</button>
   <button onclick="shareResult()">📤 Share</button>
   <button onclick="copyResult()">📋 Copy Result</button>
+<button onclick="downloadImage()">📷 Download Image</button>
 
+<button onclick="downloadPDF()">📄 Download PDF</button>
 <div id="result"></div>
   <hr>
 
@@ -219,7 +224,7 @@ document.getElementById("result").innerHTML =
 "<h3>💱 Conversion Result</h3>" +
 "<p><b>" + amount + " " + from + " = " + result + " " + to + "</b></p>" +
 "<p>📈 1 " + from + " = " + rate.toFixed(4) + " " + to + "</p>" +
-"</div>";
+
 "❌ Unable to fetch live exchange rates.";
 
 }
@@ -230,6 +235,40 @@ function setFavorite(from,to){
 document.getElementById("fromCurrency").value = from;
 
 document.getElementById("toCurrency").value = to;
+
+  }
+  
+  async function downloadImage(){
+
+const card = document.querySelector(".card");
+
+const canvas = await html2canvas(card);
+
+const link = document.createElement("a");
+
+link.download = "Currency-Converter-Result.png";
+
+link.href = canvas.toDataURL();
+
+link.click();
+
+}
+
+async function downloadPDF(){
+
+const { jsPDF } = window.jspdf;
+
+const card = document.querySelector(".card");
+
+const canvas = await html2canvas(card);
+
+const imgData = canvas.toDataURL("image/png");
+
+const pdf = new jsPDF();
+
+pdf.addImage(imgData,"PNG",10,10,190,0);
+
+pdf.save("Currency-Converter-Result.pdf");
 
   }
 </script>

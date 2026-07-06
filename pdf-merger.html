@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PakToolsHub - PDF Merger</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:600px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+input{
+width:90%;
+padding:12px;
+margin:15px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#status{
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+color:#2563eb;
+}
+
+</style>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>PakToolsHub</h1>
+
+<p>Free Online Tools</p>
+
+</div>
+<br>
+
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="ur">اردو</option>
+</select>
+<div class="card">
+
+<h2>📄 PDF Merger</h2>
+  <div id="dropArea" style="border:2px dashed #2563eb;padding:30px;border-radius:10px;margin-bottom:15px;">
+
+📂 Drag & Drop PDF Files Here
+
+<br><br>
+
+OR
+
+</div>
+<input type="file" id="pdfInput" multiple accept=".pdf" onchange="showFiles()">
+
+<div id="fileList"></div>
+
+<br>
+
+
+
+<button onclick="mergePDF()">📄 Merge PDF</button>
+
+<button onclick="resetTool()">🔄 Reset</button>
+<button onclick="shareTool()">📤 Share</button>
+  <progress id="progressBar" value="0" max="100" style="width:100%; display:none;"></progress>
+<div id="status"></div>
+
+</div>
+
+<script>
+  let selectedFiles = [];
+async function mergePDF(){
+
+let files = selectedFiles;
+
+if(files.length < 2){
+alert("Please select at least 2 PDF files.");
+return;
+}
+
+document.getElementById("status").innerHTML =
+"⏳ Merging PDFs...";
+let progress = document.getElementById("progressBar");
+let startTime = Date.now();
+
+let totalPages = 0;
+progress.style.display = "block";
+
+progress.value = 0;
+const mergedPdf = await PDFLib.PDFDocument.create();
+
+for(let i=0;i<files.length;i++){
+
+let file = files[i];
+
+const bytes = await file.arrayBuffer();
+
+const pdf = await PDFLib.PDFDocument.load(bytes);
+totalPages += pdf.getPageCount();
+const pages = await mergedPdf.copyPages(pdf,pdf.getPageIndices());
+
+pages.forEach(page=>mergedPdf.addPage(page));
+progress.value = ((i + 1) / files.length) * 100;
+}
+
+const mergedBytes = await mergedPdf.save();
+
+const blob = new Blob([mergedBytes],{type:"application/pdf"});
+
+const link = document.createElement("a");
+
+link.href = URL.createObjectURL(blob);
+
+link.download = "PakToolsHub-Merged.pdf";
+
+link.click();
+let mergeTime = ((Date.now() - startTime)/1000).toFixed(1);
+document.getElementById("status").innerHTML =
+
+"<div style='background:#f8fafc;padding:20px;border:2px solid #2563eb;border-radius:12px;margin-top:20px;text-align:left;'>" +
+
+"<h3 style='color:#16a34a;'>✅ PDF Merged Successfully</h3>" +
+
+"<p>📄 <b>Total PDFs Merged:</b> " + files.length + "</p>" +
+
+"<p>📑 <b>Total Pages:</b> " + totalPages + "</p>" +
+
+"<p>⏱️ <b>Merge Time:</b> " + mergeTime + " seconds</p>" +
+
+"<p>📥 <b>Download:</b> Started Automatically</p>" +
+
+"<hr>" +
+
+"<p>🎉 Thank you for using <b>PakToolsHub</b>.</p>" +
+
+"</div>";
+progress.style.display = "none";
+}
+
+function resetTool(){
+
+document.getElementById("pdfInput").value="";
+
+document.getElementById("status").innerHTML="";
+document.getElementById("fileList").innerHTML = "";
+ 
+
+selectedFiles = [];
+}
+function showFiles(){
+
+selectedFiles = Array.from(document.getElementById("pdfInput").files);
+
+updateFileList();
+
+}
+  function updateFileList(){
+
+let html = "<h3>📄 Selected Files</h3>";
+
+selectedFiles.forEach((file,index)=>{
+
+html += "<p>✅ " + file.name +
+" <button onclick='removeFile("+index+")'>❌ Remove</button></p>";
+
+});
+
+document.getElementById("fileList").innerHTML = html;
+
+}
+
+function removeFile(index){
+
+selectedFiles.splice(index,1);
+
+updateFileList();
+
+  }
+let dropArea = document.getElementById("dropArea");
+
+dropArea.addEventListener("dragover", function(e){
+e.preventDefault();
+dropArea.style.background="#dbeafe";
+});
+
+dropArea.addEventListener("dragleave", function(){
+dropArea.style.background="white";
+});
+
+dropArea.addEventListener("drop", function(e){
+
+e.preventDefault();
+
+dropArea.style.background="white";
+selectedFiles = Array.from(e.dataTransfer.files);
+document.getElementById("pdfInput").files = e.dataTransfer.files;
+
+showFiles();
+
+}); 
+  async function shareTool(){
+
+if(navigator.share){
+
+await navigator.share({
+title:"PakToolsHub - PDF Merger",
+text:"Merge PDF files online for free.",
+url:window.location.href
+});
+
+}else{
+
+alert("Sharing is not supported on this device.");
+
+}
+
+}
+  function changeLanguage(){
+
+let lang = document.getElementById("language").value;
+
+if(lang=="ur"){
+
+document.querySelector("h2").innerText="📄 پی ڈی ایف مرجر";
+
+document.querySelector('button[onclick="mergePDF()"]').innerText="📄 پی ڈی ایف مرج کریں";
+
+document.querySelector('button[onclick="resetTool()"]').innerText="🔄 ری سیٹ";
+
+document.querySelector('button[onclick="shareTool()"]').innerText="📤 شیئر";
+
+document.getElementById("dropArea").innerHTML =
+"📂 پی ڈی ایف فائلیں یہاں Drag & Drop کریں<br><br>یا";
+
+}else{
+
+document.querySelector("h2").innerText="📄 PDF Merger";
+
+document.querySelector('button[onclick="mergePDF()"]').innerText="📄 Merge PDF";
+
+document.querySelector('button[onclick="resetTool()"]').innerText="🔄 Reset";
+
+document.querySelector('button[onclick="shareTool()"]').innerText="📤 Share";
+
+document.getElementById("dropArea").innerHTML =
+"📂 Drag & Drop PDF Files Here<br><br>OR";
+
+}
+
+  }
+</script>
+
+</body>
+</html>

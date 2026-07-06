@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PakToolsHub - Currency Converter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:500px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+input,select{
+width:90%;
+padding:12px;
+margin:10px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+color:#2563eb;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>PakToolsHub</h1>
+<p>Free Online Tools</p>
+</div>
+
+<div class="card">
+
+<h2>💱 Currency Converter</h2>
+  <input type="number" id="amount" placeholder="Enter Amount">
+
+<select id="fromCurrency">
+<option value="USD">🇺🇸 US Dollar (USD)</option>
+<option value="PKR">🇵🇰 Pakistani Rupee (PKR)</option>
+<option value="EUR">🇪🇺 Euro (EUR)</option>
+<option value="GBP">🇬🇧 British Pound (GBP)</option>
+</select>
+
+<button onclick="swapCurrency()">🔄 Swap</button>
+
+<select id="toCurrency">
+<option value="PKR">🇵🇰 Pakistani Rupee (PKR)</option>
+<option value="USD">🇺🇸 US Dollar (USD)</option>
+<option value="EUR">🇪🇺 Euro (EUR)</option>
+<option value="GBP">🇬🇧 British Pound (GBP)</option>
+</select>
+
+<br><br>
+
+<button onclick="convertCurrency()">💱 Convert</button>
+
+<button onclick="resetForm()">🔄 Reset</button>
+
+<div id="result"></div>
+
+<!-- اگلے Step میں یہاں Inputs آئیں گے -->
+function convertCurrency(){
+
+let amount = parseFloat(document.getElementById("amount").value);
+
+let from = document.getElementById("fromCurrency").value;
+
+let to = document.getElementById("toCurrency").value;
+
+if(!amount){
+alert("Please enter amount");
+return;
+}
+
+let rates = {
+USD:1,
+PKR:285,
+EUR:0.86,
+GBP:0.74
+};
+
+let usd = amount / rates[from];
+
+let result = usd * rates[to];
+
+document.getElementById("result").innerHTML =
+amount + " " + from + " = <b>" +
+result.toFixed(2) + " " + to + "</b>";
+
+}
+  function swapCurrency(){
+
+let from = document.getElementById("fromCurrency");
+
+let to = document.getElementById("toCurrency");
+
+let temp = from.value;
+
+from.value = to.value;
+
+to.value = temp;
+
+}
+  function resetForm(){
+
+document.getElementById("amount").value = "";
+
+document.getElementById("fromCurrency").selectedIndex = 0;
+
+document.getElementById("toCurrency").selectedIndex = 0;
+
+document.getElementById("result").innerHTML = "";
+
+}
+</div>
+
+</body>
+</html>

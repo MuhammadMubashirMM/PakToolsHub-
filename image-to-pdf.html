@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PakToolsHub - Image to PDF Converter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:600px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+input{
+width:90%;
+padding:12px;
+margin:10px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:10px;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+#preview img{
+width:120px;
+margin:10px;
+border-radius:8px;
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+  
+</script>
+</head>
+
+<body>
+
+<div class="header">
+<h1>PakToolsHub</h1>
+<p>Free Online Tools</p>
+</div>
+<div style="margin:20px;">
+<label><b>🌍 Language:</b></label>
+
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="ur">اردو</option>
+</select>
+</div>
+<div class="card">
+
+<h2>🖼️ Image to PDF Converter</h2>
+  <div id="dropArea"
+style="border:2px dashed #2563eb;
+padding:30px;
+margin-bottom:20px;
+border-radius:10px;">
+
+📂 Drag & Drop Images Here
+<br><br>
+OR
+  </div>
+<input type="file" id="imageInput" multiple accept="image/*" onchange="previewImages()">
+
+<br>
+
+
+<button onclick="convertToPDF()">Convert to PDF</button>
+  <button onclick="resetTool()">🔄 Reset</button>
+  <button onclick="sharePDF()">📤 Share</button>
+<p id="status" style="color:green;font-weight:bold;"></p>  
+<div id="preview"></div>
+
+</div>
+<script>
+
+function previewImages(){
+
+let preview = document.getElementById("preview");
+
+preview.innerHTML = "";
+
+let files = document.getElementById("imageInput").files;
+
+for(let i=0;i<files.length;i++){
+
+let reader = new FileReader();
+
+reader.onload = function(e){
+
+let img = document.createElement("img");
+
+img.src = e.target.result;
+
+img.style.width = "120px";
+img.style.margin = "10px";
+img.style.borderRadius = "8px";
+
+preview.appendChild(img);
+
+}
+
+reader.readAsDataURL(files[i]);
+
+}
+
+}
+async function convertToPDF(){
+
+const { jsPDF } = window.jspdf;
+
+let files = document.getElementById("imageInput").files;
+
+if(files.length==0){
+alert("Please select at least one image.");
+return;
+}
+
+let pdf = new jsPDF();
+
+for(let i=0;i<files.length;i++){
+
+let file = files[i];
+
+let reader = new FileReader();
+
+await new Promise(resolve=>{
+
+reader.onload=function(e){
+
+let img=new Image();
+
+img.onload=function(){
+
+let canvas=document.createElement("canvas");
+
+canvas.width=img.width;
+canvas.height=img.height;
+
+let ctx=canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+
+let imgData=canvas.toDataURL("image/jpeg");
+
+if(i>0){
+pdf.addPage();
+}
+
+pdf.addImage(imgData,"JPEG",10,10,190,0);
+
+resolve();
+
+}
+
+img.src=e.target.result;
+
+}
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+pdf.save("PakToolsHub-Image-to-PDF.pdf");
+document.getElementById("status").innerHTML =
+"✅ PDF Downloaded Successfully!";
+  }
+  function resetTool(){
+
+document.getElementById("imageInput").value = "";
+
+document.getElementById("preview").innerHTML = "";
+
+document.getElementById("status").innerHTML = "";
+
+  }
+  let dropArea = document.getElementById("dropArea");
+
+dropArea.addEventListener("dragover", function(e){
+e.preventDefault();
+});
+
+dropArea.addEventListener("drop", function(e){
+
+e.preventDefault();
+
+document.getElementById("imageInput").files = e.dataTransfer.files;
+
+previewImages();
+
+});
+  function changeLanguage(){
+
+let lang = document.getElementById("language").value;
+
+if(lang=="ur"){
+
+document.querySelector("h2").innerText="🖼️ تصویر کو PDF میں تبدیل کریں";
+
+document.querySelector('button[onclick="convertToPDF()"]').innerText="📄 PDF بنائیں";
+
+document.querySelector('button[onclick="resetTool()"]').innerText="🔄 ری سیٹ";
+
+document.getElementById("dropArea").innerHTML=
+"📂 تصاویر یہاں Drag & Drop کریں<br><br>یا";
+
+}
+else{
+
+document.querySelector("h2").innerText="🖼️ Image to PDF Converter";
+
+document.querySelector('button[onclick="convertToPDF()"]').innerText="📄 Convert to PDF";
+
+document.querySelector('button[onclick="resetTool()"]').innerText="🔄 Reset";
+
+document.getElementById("dropArea").innerHTML=
+"📂 Drag & Drop Images Here<br><br>OR";
+
+}
+
+  }
+  async function sharePDF(){
+
+if(navigator.share){
+
+await navigator.share({
+title:"PakToolsHub - Image to PDF Converter",
+text:"Convert images to PDF for free.",
+url:window.location.href
+});
+
+}else{
+
+alert("Sharing not supported.");
+
+}
+
+  }
+</script>
+</body>
+  </html>

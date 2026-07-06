@@ -205,7 +205,9 @@ document.getElementById("preview").innerHTML = "";
 document.getElementById("status").innerHTML = "";
 
   }
-  let dropArea = document.getElementById("dropArea");
+  window.onload = function(){
+
+let dropArea = document.getElementById("dropArea");
 
 dropArea.addEventListener("dragover", function(e){
 e.preventDefault();
@@ -220,6 +222,8 @@ document.getElementById("imageInput").files = e.dataTransfer.files;
 previewImages();
 
 });
+
+}
   function changeLanguage(){
 
 let lang = document.getElementById("language").value;

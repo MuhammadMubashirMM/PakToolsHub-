@@ -67,6 +67,17 @@ color:#2563eb;
 <div class="card">
 
 <h2>💱 Currency Converter</h2>
+  <h3>⭐ Favorite Currencies</h3>
+
+<button onclick="setFavorite('USD','PKR')">USD → PKR</button>
+
+<button onclick="setFavorite('PKR','USD')">PKR → USD</button>
+
+<button onclick="setFavorite('EUR','USD')">EUR → USD</button>
+
+<button onclick="setFavorite('GBP','PKR')">GBP → PKR</button>
+
+<br><br>
   <input type="number" id="amount" placeholder="Enter Amount">
 
 <select id="fromCurrency">
@@ -90,39 +101,20 @@ color:#2563eb;
 <button onclick="convertCurrency()">💱 Convert</button>
 
 <button onclick="resetForm()">🔄 Reset</button>
+  <button onclick="shareResult()">📤 Share</button>
+  <button onclick="copyResult()">📋 Copy Result</button>
 
 <div id="result"></div>
+  <hr>
+
+<h3>🕒 Recent Conversions</h3>
+
+<div id="history"></div>
+</div> 
 
 <!-- اگلے Step میں یہاں Inputs آئیں گے -->
-function convertCurrency(){
-
-let amount = parseFloat(document.getElementById("amount").value);
-
-let from = document.getElementById("fromCurrency").value;
-
-let to = document.getElementById("toCurrency").value;
-
-if(!amount){
-alert("Please enter amount");
-return;
-}
-
-let rates = {
-USD:1,
-PKR:285,
-EUR:0.86,
-GBP:0.74
-};
-
-let usd = amount / rates[from];
-
-let result = usd * rates[to];
-
-document.getElementById("result").innerHTML =
-amount + " " + from + " = <b>" +
-result.toFixed(2) + " " + to + "</b>";
-
-}
+<script>
+let historyList = [];
   function swapCurrency(){
 
 let from = document.getElementById("fromCurrency");
@@ -145,9 +137,101 @@ document.getElementById("fromCurrency").selectedIndex = 0;
 document.getElementById("toCurrency").selectedIndex = 0;
 
 document.getElementById("result").innerHTML = "";
+historyList = [];
+
+document.getElementById("history").innerHTML = "";
+}
+  async function shareResult(){
+
+let text = document.getElementById("result").innerText;
+
+if(!text){
+alert("Please convert currency first.");
+return;
+}
+
+if(navigator.share){
+
+await navigator.share({
+title:"PakToolsHub Currency Converter",
+text:text,
+url:window.location.href
+});
+
+}else{
+
+alert("Sharing not supported on this device.");
 
 }
-</div>
 
+}
+  function copyResult(){
+
+let text = document.getElementById("result").innerText;
+
+if(text==""){
+alert("Please convert currency first.");
+return;
+}
+
+navigator.clipboard.writeText(text);
+
+alert("Result Copied!");
+
+}
+  async function convertCurrency(){
+
+let amount = parseFloat(document.getElementById("amount").value);
+
+let from = document.getElementById("fromCurrency").value;
+
+let to = document.getElementById("toCurrency").value;
+
+if(!amount){
+alert("Please enter amount");
+return;
+}
+
+try{
+
+let response = await fetch("https://open.er-api.com/v6/latest/" + from);
+
+let data = await response.json();
+
+let rate = data.rates[to];
+
+let result = (amount * rate).toFixed(2);
+
+document.getElementById("result").innerHTML =
+amount + " " + from + " = <b>" + result + " " + to + "</b>";
+historyList.unshift(amount + " " + from + " → " + result + " " + to);
+
+if(historyList.length > 5){
+historyList.pop();
+}
+
+document.getElementById("history").innerHTML =
+historyList.map(item => "<p>✅ " + item + "</p>").join("");
+}catch(error){
+
+document.getElementById("result").innerHTML =
+"<div style='background:#f8fafc;padding:20px;border:2px solid #2563eb;border-radius:12px;'>" +
+"<h3>💱 Conversion Result</h3>" +
+"<p><b>" + amount + " " + from + " = " + result + " " + to + "</b></p>" +
+"<p>📈 1 " + from + " = " + rate.toFixed(4) + " " + to + "</p>" +
+"</div>";
+"❌ Unable to fetch live exchange rates.";
+
+}
+
+} 
+function setFavorite(from,to){
+
+document.getElementById("fromCurrency").value = from;
+
+document.getElementById("toCurrency").value = to;
+
+  }
+</script>
 </body>
 </html>

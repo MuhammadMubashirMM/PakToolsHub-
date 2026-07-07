@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PakToolsHub - PDF Splitter</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:600px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+input{
+width:90%;
+padding:12px;
+margin:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#status{
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+color:#2563eb;
+}
+@media(max-width:600px){
+
+.card{
+margin:15px;
+padding:15px;
+}
+
+input{
+width:95%;
+}
+
+button{
+width:95%;
+margin:6px 0;
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>PakToolsHub</h1>
+
+<p>Free Online Tools</p>
+
+</div>
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="ur">اردو</option>
+</select>
+<div class="card">
+
+<h2>✂️ PDF Splitter</h2>
+<div id="dropArea" style="border:2px dashed #2563eb;padding:30px;border-radius:10px;margin-bottom:15px;">
+
+📂 Drag & Drop PDF Here
+
+<br><br>
+
+OR
+
+</div>
+<input type="file" id="pdfInput" accept=".pdf">
+
+<input type="number" id="startPage" placeholder="Start Page">
+
+<input type="number" id="endPage" placeholder="End Page">
+
+<br>
+
+<button onclick="splitPDF()">✂️ Split PDF</button>
+
+<button onclick="resetTool()">🔄 Reset</button>
+ <button onclick="shareTool()">📤 Share</button> 
+<progress id="progressBar" value="0" max="100" style="width:100%;display:none;"></progress>
+<div id="status"></div>
+
+</div>
+
+<script>
+async function splitPDF(){
+let startTime = Date.now();
+
+let totalPages = 0;
+let file = document.getElementById("pdfInput").files[0];
+
+let start = parseInt(document.getElementById("startPage").value);
+
+let end = parseInt(document.getElementById("endPage").value);
+
+if(!file){
+alert("Please select a PDF.");
+return;
+}
+
+if(!start || !end || start > end){
+alert("Please enter valid page numbers.");
+return;
+}
+
+document.getElementById("status").innerHTML =
+"⏳ Splitting PDF...";
+let progress = document.getElementById("progressBar");
+
+progress.style.display = "block";
+
+progress.value = 20;
+const bytes = await file.arrayBuffer();
+
+const pdf = await PDFLib.PDFDocument.load(bytes);
+  totalPages = pdf.getPageCount();
+progress.value = 50;
+const totalPages = pdf.getPageCount();
+
+if(start < 1 || end > totalPages){
+
+alert("Page number is out of range.");
+
+return;
+
+}
+
+const newPdf = await PDFLib.PDFDocument.create();
+
+const pages = await newPdf.copyPages(pdf, [...Array(end-start+1).keys()].map(i=>i+start-1));
+
+pages.forEach(page=>newPdf.addPage(page));
+
+const pdfBytes = await newPdf.save();
+progress.value = 80;
+const blob = new Blob([pdfBytes],{type:"application/pdf"});
+
+const link = document.createElement("a");
+
+link.href = URL.createObjectURL(blob);
+
+link.download = "PakToolsHub-Split.pdf";
+
+link.click();
+  let splitTime = ((Date.now()-startTime)/1000).toFixed(1);
+progress.value = 100;
+
+setTimeout(function(){
+
+progress.style.display = "none";
+
+},500);
+document.getElementById("status").innerHTML =
+
+"<div style='background:#f8fafc;padding:20px;border:2px solid #2563eb;border-radius:12px;margin-top:20px;text-align:left;'>" +
+
+"<h3 style='color:#16a34a;'>✅ PDF Split Successfully</h3>" +
+
+"<p>📄 <b>Total Pages:</b> " + totalPages + "</p>" +
+
+"<p>📑 <b>Extracted Pages:</b> " + start + " - " + end + "</p>" +
+
+"<p>⏱️ <b>Split Time:</b> " + splitTime + " seconds</p>" +
+
+"<p>📥 <b>Download:</b> Started Automatically</p>" +
+
+"<hr>" +
+
+"<p>🎉 Thank you for using <b>PakToolsHub</b>.</p>" +
+
+"</div>";
+}
+
+function resetTool(){
+
+document.getElementById("pdfInput").value = "";
+
+document.getElementById("startPage").value = "";
+
+document.getElementById("endPage").value = "";
+
+document.getElementById("status").innerHTML = "";
+
+  }
+  let dropArea = document.getElementById("dropArea");
+
+dropArea.addEventListener("dragover",function(e){
+
+e.preventDefault();
+
+dropArea.style.background="#dbeafe";
+
+});
+
+dropArea.addEventListener("dragleave",function(){
+
+dropArea.style.background="white";
+
+});
+
+dropArea.addEventListener("drop",function(e){
+
+e.preventDefault();
+
+dropArea.style.background="white";
+
+document.getElementById("pdfInput").files = e.dataTransfer.files;
+
+});
+  async function shareTool(){
+
+if(navigator.share){
+
+await navigator.share({
+title:"PakToolsHub - PDF Splitter",
+text:"Split PDF files online for free.",
+url:window.location.href
+});
+
+}else{
+
+alert("Sharing not supported.");
+
+}
+
+      }
+ function changeLanguage(){
+
+let lang=document.getElementById("language").value;
+
+if(lang=="ur"){
+
+document.querySelector("h2").innerText="✂️ پی ڈی ایف اسپلٹر";
+
+document.querySelector('button[onclick="splitPDF()"]').innerText="✂️ پی ڈی ایف تقسیم کریں";
+
+document.querySelector('button[onclick="resetTool()"]').innerText="🔄 ری سیٹ";
+
+document.querySelector('button[onclick="shareTool()"]').innerText="📤 شیئر";
+
+document.getElementById("dropArea").innerHTML="📂 پی ڈی ایف یہاں Drag & Drop کریں<br><br>یا";
+
+}else{
+
+document.querySelector("h2").innerText="✂️ PDF Splitter";
+
+document.querySelector('button[onclick="splitPDF()"]').innerText="✂️ Split PDF";
+
+document.querySelector('button[onclick="resetTool()"]').innerText="🔄 Reset";
+
+document.querySelector('button[onclick="shareTool()"]').innerText="📤 Share";
+
+document.getElementById("dropArea").innerHTML="📂 Drag & Drop PDF Here<br><br>OR";
+
+}
+
+}
+</script>
+
+</body>
+  </html>

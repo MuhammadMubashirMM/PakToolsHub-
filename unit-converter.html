@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PakToolsHub - Unit Converter</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:600px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+select,input{
+width:90%;
+padding:12px;
+margin:10px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+color:#2563eb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>PakToolsHub</h1>
+
+<p>Free Online Tools</p>
+
+</div>
+
+<div class="card">
+
+<h2>📏 Unit Converter</h2>
+
+<select id="category">
+
+<option value="length">📏 Length</option>
+
+<option value="weight">⚖️ Weight</option>
+
+<option value="temperature">🌡️ Temperature</option>
+
+<option value="area">📐 Area</option>
+
+<option value="speed">🚗 Speed</option>
+
+<option value="volume">💧 Volume</option>
+<option value="time">⏰ Time</option>
+
+<option value="storage">💾 Digital Storage</option>
+</select>
+
+<input type="number" id="value" placeholder="Enter Value">
+
+<select id="fromUnit"></select>
+
+<button onclick="swapUnits()">🔄 Swap</button>
+<button onclick="copyResult()">📋 Copy</button>
+<button onclick="downloadResult()">📥 Download</button>
+<button onclick="shareResult()">📤 Share</button>
+<select id="toUnit"></select>
+
+<br>
+
+<button onclick="convertUnit()">📏 Convert</button>
+
+<button onclick="resetTool()">🔄 Reset</button>
+
+<div id="result"></div>
+<hr>
+
+<h3>🕒 Recent Conversions</h3>
+
+<div id="history"></div>
+</div>
+
+<script>
+  let historyList = [];
+const units = {
+
+length:{
+Meter:1,
+Kilometer:1000,
+Centimeter:0.01,
+Millimeter:0.001,
+Mile:1609.34,
+Yard:0.9144,
+Foot:0.3048,
+Inch:0.0254
+},
+
+weight:{
+Kilogram:1,
+Gram:0.001,
+Milligram:0.000001,
+Pound:0.453592,
+Ounce:0.0283495,
+Ton:1000
+}, 
+temperature:{
+Celsius:1,
+Fahrenheit:1,
+Kelvin:1
+},
+area:{
+"Square Meter":1,
+"Square Kilometer":1000000,
+"Square Centimeter":0.0001,
+"Square Foot":0.092903,
+"Square Inch":0.00064516,
+Acre:4046.856,
+Hectare:10000
+},
+speed:{
+"Meter/Second":1,
+"Kilometer/Hour":0.277778,
+"Mile/Hour":0.44704,
+"Foot/Second":0.3048,
+"Knot":0.514444
+},
+volume:{
+Liter:1,
+Milliliter:0.001,
+"Cubic Meter":1000,
+"Gallon (US)":3.78541,
+Quart:0.946353,
+Pint:0.473176,
+Cup:0.24
+},
+time:{
+Second:1,
+Minute:60,
+Hour:3600,
+Day:86400,
+Week:604800,
+Month:2628000,
+Year:31536000
+},
+storage:{
+Byte:1,
+Kilobyte:1024,
+Megabyte:1048576,
+Gigabyte:1073741824,
+Terabyte:1099511627776
+},
+};
+
+function loadUnits(){
+
+let category = document.getElementById("category").value;
+
+let from = document.getElementById("fromUnit");
+
+let to = document.getElementById("toUnit");
+
+from.innerHTML = "";
+to.innerHTML = "";
+
+for(let unit in units[category]){
+
+from.innerHTML += `<option value="${unit}">${unit}</option>`;
+
+to.innerHTML += `<option value="${unit}">${unit}</option>`;
+
+}
+
+to.selectedIndex = 1;
+
+}
+
+loadUnits();
+
+document.getElementById("category").addEventListener("change",loadUnits);
+
+function convertUnit(){
+
+let value = parseFloat(document.getElementById("value").value);
+
+if(!value){
+alert("Please enter a value.");
+return;
+}
+
+let category = document.getElementById("category").value;
+let from = document.getElementById("fromUnit").value;
+let to = document.getElementById("toUnit").value;
+
+if(category=="temperature"){
+
+let result;
+
+if(from=="Celsius" && to=="Fahrenheit")
+result=(value*9/5)+32;
+else if(from=="Fahrenheit" && to=="Celsius")
+result=(value-32)*5/9;
+else if(from=="Celsius" && to=="Kelvin")
+result=value+273.15;
+else if(from=="Kelvin" && to=="Celsius")
+result=value-273.15;
+else if(from=="Fahrenheit" && to=="Kelvin")
+result=(value-32)*5/9+273.15;
+else if(from=="Kelvin" && to=="Fahrenheit")
+result=(value-273.15)*9/5+32;
+else
+result=value;
+
+document.getElementById("result").innerHTML =
+`<b>${value} ${from} = ${result.toFixed(2)} ${to}</b>`;
+
+historyList.unshift(`${value} ${from} → ${result.toFixed(2)} ${to}`);
+
+if(historyList.length > 5){
+historyList.pop();
+}
+
+document.getElementById("history").innerHTML =
+historyList.map(item=>`<p>✅ ${item}</p>`).join("");
+
+return;
+
+}
+
+let base = value * units[category][from];
+let result = base / units[category][to];
+
+document.getElementById("result").innerHTML =
+
+"<div style='background:#f8fafc;padding:20px;border:2px solid #2563eb;border-radius:12px;text-align:left;margin-top:20px;'>"+
+
+"<h3>✅ Conversion Successful</h3>"+
+
+"<p><b>📏 Value:</b> "+value+" "+from+"</p>"+
+
+"<p><b>🔄 Converted To:</b> "+result.toFixed(4)+" "+to+"</p>"+
+
+"<p><b>📅 Time:</b> "+new Date().toLocaleString()+"</p>"+
+
+"<hr>"+
+
+"<p>🎉 Thank you for using <b>PakToolsHub</b></p>"+
+
+"</div>";
+historyList.unshift(`${value} ${from} → ${result.toFixed(4)} ${to}`);
+
+if(historyList.length > 5){
+historyList.pop();
+}
+
+document.getElementById("history").innerHTML =
+historyList.map(item=>`<p>✅ ${item}</p>`).join("");
+
+}
+
+function swapUnits(){
+
+let from = document.getElementById("fromUnit");
+
+let to = document.getElementById("toUnit");
+
+let temp = from.value;
+
+from.value = to.value;
+
+to.value = temp;
+
+}
+
+function resetTool(){
+
+document.getElementById("value").value = "";
+
+document.getElementById("result").innerHTML = "";
+
+loadUnits();
+historyList = [];
+
+document.getElementById("history").innerHTML = "";
+  }
+  function copyResult(){
+
+let text=document.getElementById("result").innerText;
+
+if(text==""){
+alert("Please convert first.");
+return;
+}
+
+navigator.clipboard.writeText(text);
+
+alert("Result Copied!");
+
+}
+
+async function shareResult(){
+
+let text=document.getElementById("result").innerText;
+
+if(text==""){
+alert("Please convert first.");
+return;
+}
+
+if(navigator.share){
+
+await navigator.share({
+
+title:"PakToolsHub Unit Converter",
+
+text:text,
+
+url:window.location.href
+
+});
+
+}else{
+
+alert("Sharing not supported.");
+
+}
+
+}
+  function downloadResult(){
+
+let text=document.getElementById("result").innerText;
+
+if(text==""){
+alert("Please convert first.");
+return;
+}
+
+let blob=new Blob([text],{type:"text/plain"});
+
+let link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+
+link.download="Unit-Conversion.txt";
+
+link.click();
+
+  }
+</script>
+
+</body>
+</html>

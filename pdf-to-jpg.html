@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PakToolsHub - PDF to JPG Converter</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.js"></script>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.worker.min.js";
+</script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:700px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+#dropArea{
+border:2px dashed #2563eb;
+padding:30px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+input{
+width:90%;
+padding:12px;
+margin:10px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+
+img{
+max-width:100%;
+margin-top:15px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+#status{
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+color:#2563eb;
+}
+
+@media(max-width:600px){
+
+.card{
+margin:15px;
+padding:15px;
+}
+
+button,input{
+width:95%;
+}
+/* ===== Mobile Friendly Polish ===== */
+
+@media (max-width:768px){
+
+.card{
+width:95%;
+margin:15px auto;
+padding:18px;
+}
+
+.header h1{
+font-size:26px;
+}
+
+.header p{
+font-size:14px;
+}
+
+h2{
+font-size:22px;
+}
+
+button{
+width:100%;
+padding:14px;
+margin:8px 0;
+font-size:16px;
+border-radius:10px;
+}
+
+input{
+width:100%;
+padding:14px;
+font-size:16px;
+box-sizing:border-box;
+}
+
+#dropArea{
+padding:25px;
+font-size:16px;
+}
+
+img{
+width:100%;
+height:auto;
+margin-top:12px;
+border-radius:8px;
+}
+
+#preview{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+#status,
+#pdfInfo{
+font-size:15px;
+word-wrap:break-word;
+}
+
+  }
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>PakToolsHub</h1>
+
+<p>Free Online Tools</p>
+
+</div>
+
+<div class="card">
+
+<h2>📄 PDF to JPG Converter</h2>
+
+<div id="dropArea">
+
+📂 Drag & Drop PDF Here
+
+<br><br>
+
+OR
+
+</div>
+
+<input type="file" id="pdfInput" accept=".pdf">
+
+<br>
+
+<button onclick="convertPDF()">🖼️ Convert to JPG</button>
+
+<button onclick="resetTool()">🔄 Reset</button>
+<button onclick="downloadAllZIP()">📦 Download All JPGs (ZIP)</button>
+ <button onclick="shareResult()">📤 Share</button> 
+<div id="status"></div>
+<div id="pdfInfo"></div>
+<div id="preview"></div>
+
+</div>
+
+<script>
+let jpgImages = [];
+let dropArea=document.getElementById("dropArea");
+
+dropArea.addEventListener("dragover",function(e){
+e.preventDefault();
+dropArea.style.background="#dbeafe";
+});
+
+dropArea.addEventListener("dragleave",function(){
+dropArea.style.background="white";
+});
+
+dropArea.addEventListener("drop",function(e){
+
+e.preventDefault();
+
+dropArea.style.background="white";
+
+document.getElementById("pdfInput").files=e.dataTransfer.files;
+
+});
+
+async function convertPDF(){
+
+let file=document.getElementById("pdfInput").files[0];
+
+if(!file){
+alert("Please select a PDF.");
+return;
+}
+
+document.getElementById("status").innerHTML="⏳ Converting...";
+
+let arrayBuffer=await file.arrayBuffer();
+
+let pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+let fileSize = (file.size / 1024 / 1024).toFixed(2);
+
+document.getElementById("pdfInfo").innerHTML =
+
+"<div style='background:#fff;padding:20px;border:2px solid #2563eb;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1);margin:20px 0;text-align:left;'>"+
+
+"<h3>📄 PDF Information</h3>"+
+
+"<p><b>📄 File Name:</b> "+file.name+"</p>"+
+
+"<p><b>📑 Total Pages:</b> "+pdf.numPages+"</p>"+
+
+"<p><b>💾 File Size:</b> "+fileSize+" MB</p>"+
+
+"<p><b>✅ Status:</b> Ready for Conversion</p>"+
+
+"</div>";
+let preview=document.getElementById("preview");
+
+preview.innerHTML="";
+
+for(let i=1;i<=pdf.numPages;i++){
+
+let page=await pdf.getPage(i);
+
+let viewport=page.getViewport({scale:2});
+
+let canvas=document.createElement("canvas");
+
+let context=canvas.getContext("2d");
+
+canvas.width=viewport.width;
+
+canvas.height=viewport.height;
+
+await page.render({
+canvasContext:context,
+viewport:viewport
+}).promise;
+
+let img=document.createElement("img");
+
+img.src=canvas.toDataURL("image/jpeg",1.0);
+jpgImages.push({
+name:"Page-"+i+".jpg",
+data:canvas.toDataURL("image/jpeg",1.0)
+});
+preview.appendChild(img);
+
+let link=document.createElement("a");
+
+link.href=img.src;
+
+link.download="Page-"+i+".jpg";
+
+link.innerHTML="<br><button>📥 Download Page "+i+"</button>";
+
+preview.appendChild(link);
+
+}
+document.getElementById("status").innerHTML =
+
+"<div style='background:#f8fafc;padding:20px;border:2px solid #2563eb;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1);margin-top:20px;'>"+
+
+"<h2>✅ Conversion Completed</h2>"+
+
+"<p>📄 Pages Converted: "+pdf.numPages+"</p>"+
+
+"<p>🖼️ Output Format: JPG</p>"+
+
+"<p>📅 "+new Date().toLocaleString()+"</p>"+
+
+"<hr>"+
+
+"<b>PakToolsHub</b>"+
+
+"</div>";
+
+
+}
+
+function resetTool(){
+
+document.getElementById("pdfInput").value="";
+
+document.getElementById("preview").innerHTML="";
+
+document.getElementById("status").innerHTML="";
+jpgImages = [];
+}
+async function downloadAllZIP(){
+
+if(jpgImages.length==0){
+alert("Please convert a PDF first.");
+return;
+}
+
+let zip = new JSZip();
+
+for(let image of jpgImages){
+
+let base64 = image.data.split(",")[1];
+
+zip.file(image.name, base64, {base64:true});
+
+}
+
+let content = await zip.generateAsync({type:"blob"});
+
+let link = document.createElement("a");
+
+link.href = URL.createObjectURL(content);
+
+link.download = "PakToolsHub-JPGs.zip";
+
+link.click();
+
+  }
+  async function shareResult(){
+
+let preview = document.querySelector("#preview img");
+
+if(!preview){
+alert("Please convert a PDF first.");
+return;
+}
+
+try{
+
+const response = await fetch(preview.src);
+const blob = await response.blob();
+
+const file = new File([blob],"Page-1.jpg",{type:"image/jpeg"});
+
+if(navigator.canShare && navigator.canShare({files:[file]})){
+
+await navigator.share({
+
+title:"PakToolsHub PDF to JPG",
+
+text:"Converted using PakToolsHub",
+
+files:[file]
+
+});
+
+}else{
+
+await navigator.share({
+
+title:"PakToolsHub PDF to JPG",
+
+text:"I converted my PDF to JPG using PakToolsHub.",
+
+url:window.location.href
+
+});
+
+}
+
+}catch(error){
+
+alert("Sharing is not supported on this device.");
+
+}
+
+  }
+</script>
+
+</body>
+</html>

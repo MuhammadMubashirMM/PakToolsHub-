@@ -54,6 +54,25 @@ max-width:100%;
 margin-top:20px;
 border:1px solid #ddd;
 }
+ @media(max-width:600px){
+
+.card{
+margin:15px;
+padding:15px;
+}
+
+button,
+input{
+width:95%;
+margin:8px 0;
+}
+
+canvas{
+width:100%;
+height:auto;
+}
+
+  } 
 
 </style>
 
@@ -72,7 +91,15 @@ border:1px solid #ddd;
 <div class="card">
 
 <h2>🖼️ Image Resizer</h2>
+<div id="dropArea" style="border:2px dashed #2563eb;padding:30px;border-radius:10px;margin-bottom:15px;">
 
+🖼️ Drag & Drop Image Here
+
+<br><br>
+
+OR
+
+</div>
 <input type="file" id="imageInput" accept="image/*">
 
 <input type="number" id="width" placeholder="Width (px)">
@@ -85,8 +112,11 @@ border:1px solid #ddd;
 
 <button onclick="resetTool()">🔄 Reset</button>
 <button onclick="downloadImage()">📥 Download Image</button>
+<button onclick="shareImage()">📤 Share</button>
+<button onclick="copyImage()">📋 Copy Image</button> 
+<button onclick="toggleLanguage()">🌍 English / اردو</button>  
 <canvas id="canvas"></canvas>
-
+<div id="imageInfo" style="margin-top:20px;"></div>
 </div>
 
 <script>
@@ -119,7 +149,37 @@ canvas.width = width;
 canvas.height = height;
 
 ctx.drawImage(img,0,0,width,height);
+document.getElementById("imageInfo").innerHTML =
 
+"<div style='background:#fff;padding:20px;border:2px solid #2563eb;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1);margin-top:20px;text-align:left;'>"+
+
+"<h3>✅ Image Resized Successfully</h3>"+
+
+"<p><b>🖼️ Original Size:</b> "+img.width+" × "+img.height+" px</p>"+
+
+"<p><b>📏 New Size:</b> "+width+" × "+height+" px</p>"+
+
+"<p><b>📅 Date & Time:</b> "+new Date().toLocaleString()+"</p>"+
+
+"<p><b>📥 Status:</b> Ready to Download</p>"+
+
+"<hr>"+
+
+"<p style='text-align:center;font-weight:bold;color:#2563eb;'>PakToolsHub</p>"+
+
+"</div>";
+
+"<div style='background:#f8fafc;padding:15px;border:2px solid #2563eb;border-radius:10px;text-align:left;margin-top:20px;'>"+
+
+"<h3>🖼️ Image Information</h3>"+
+
+"<p><b>Original Size:</b> " + img.width + " × " + img.height + " px</p>"+
+
+"<p><b>Resized Size:</b> " + width + " × " + height + " px</p>"+
+
+"<p><b>Status:</b> ✅ Image Resized Successfully</p>"+
+
+"</div>";
 };
 
 img.src = URL.createObjectURL(file);
@@ -160,6 +220,94 @@ link.href = canvas.toDataURL("image/png");
 link.click();
 
   }
+  let dropArea = document.getElementById("dropArea");
+
+dropArea.addEventListener("dragover",function(e){
+e.preventDefault();
+dropArea.style.background="#dbeafe";
+});
+
+dropArea.addEventListener("dragleave",function(){
+dropArea.style.background="white";
+});
+
+dropArea.addEventListener("drop",function(e){
+
+e.preventDefault();
+
+dropArea.style.background="white";
+
+document.getElementById("imageInput").files = e.dataTransfer.files;
+
+});
+  async function shareImage(){
+
+let canvas = document.getElementById("canvas");
+
+if(canvas.width==0){
+alert("Please resize an image first.");
+return;
+}
+
+canvas.toBlob(async function(blob){
+
+let file = new File([blob],"PakToolsHub-Resized-Image.png",{type:"image/png"});
+
+if(navigator.canShare && navigator.canShare({files:[file]})){
+
+await navigator.share({
+title:"PakToolsHub Image Resizer",
+text:"Resized using PakToolsHub",
+files:[file]
+});
+
+}else{
+
+alert("Sharing is not supported on this device.");
+
+}
+
+});
+
+  }
+  async function copyImage(){
+
+let canvas = document.getElementById("canvas");
+
+if(canvas.width==0){
+alert("Please resize an image first.");
+return;
+}
+
+canvas.toBlob(async(blob)=>{
+
+try{
+
+await navigator.clipboard.write([
+new ClipboardItem({"image/png":blob})
+]);
+
+alert("✅ Image Copied!");
+
+}catch{
+
+alert("Copy not supported on this device.");
+
+}
+
+});
+
+  }
+  let english=true;
+
+function toggleLanguage(){
+
+english=!english;
+
+document.querySelector("h2").innerHTML=
+english ? "🖼️ Image Resizer" : "🖼️ تصویر کا سائز تبدیل کریں";
+
+}
 </script>
 
 </body>

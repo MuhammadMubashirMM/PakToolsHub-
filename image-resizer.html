@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>PakToolsHub - Image Resizer</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef4ff;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#2563eb;
+color:white;
+padding:20px;
+}
+
+.card{
+background:white;
+max-width:600px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+input{
+width:90%;
+padding:12px;
+margin:10px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:8px;
+border-radius:8px;
+cursor:pointer;
+}
+
+canvas{
+max-width:100%;
+margin-top:20px;
+border:1px solid #ddd;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>PakToolsHub</h1>
+
+<p>Free Online Tools</p>
+
+</div>
+
+<div class="card">
+
+<h2>🖼️ Image Resizer</h2>
+
+<input type="file" id="imageInput" accept="image/*">
+
+<input type="number" id="width" placeholder="Width (px)">
+
+<input type="number" id="height" placeholder="Height (px)">
+
+<br>
+
+<button onclick="resizeImage()">🖼️ Resize Image</button>
+
+<button onclick="resetTool()">🔄 Reset</button>
+<button onclick="downloadImage()">📥 Download Image</button>
+<canvas id="canvas"></canvas>
+
+</div>
+
+<script>
+function resizeImage(){
+
+let file = document.getElementById("imageInput").files[0];
+
+if(!file){
+alert("Please select an image.");
+return;
+}
+
+let width = parseInt(document.getElementById("width").value);
+let height = parseInt(document.getElementById("height").value);
+
+if(!width || !height){
+alert("Please enter width and height.");
+return;
+}
+
+let img = new Image();
+
+img.onload = function(){
+
+let canvas = document.getElementById("canvas");
+
+let ctx = canvas.getContext("2d");
+
+canvas.width = width;
+canvas.height = height;
+
+ctx.drawImage(img,0,0,width,height);
+
+};
+
+img.src = URL.createObjectURL(file);
+
+}
+
+function resetTool(){
+
+document.getElementById("imageInput").value = "";
+
+document.getElementById("width").value = "";
+
+document.getElementById("height").value = "";
+
+let canvas = document.getElementById("canvas");
+
+canvas.getContext("2d").clearRect(0,0,canvas.width,canvas.height);
+
+canvas.width = 0;
+canvas.height = 0;
+
+  }
+  function downloadImage(){
+
+let canvas = document.getElementById("canvas");
+
+if(canvas.width==0){
+alert("Please resize an image first.");
+return;
+}
+
+let link = document.createElement("a");
+
+link.download = "PakToolsHub-Resized-Image.png";
+
+link.href = canvas.toDataURL("image/png");
+
+link.click();
+
+  }
+</script>
+
+</body>
+  </html>

@@ -1,20 +1,30 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>PakToolsHub - Word Counter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-button{
-  background:#2563eb;
-  color:white;
-  border:none;
-  padding:12px 20px;
-  margin:8px;
-  border-radius:8px;
-  font-size:16px;
-  cursor:pointer;
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PakToolsHub - Free Online Tools</title>
+
+<meta name="description" content="Free Online PDF, Image, Calculator & Text Tools">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
+
+body{
+background:#eef4ff;
+}
+
+/* Navbar */
+
 .navbar{
 
 display:flex;
@@ -23,11 +33,9 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:15px 25px;
+padding:15px 8%;
 
 background:#2563eb;
-
-color:white;
 
 position:sticky;
 
@@ -39,68 +47,55 @@ z-index:1000;
 
 .logo{
 
-font-size:24px;
+font-size:28px;
 
 font-weight:bold;
 
+color:white;
+
 }
 
-nav a{
+.nav-links{
+
+display:flex;
+
+gap:20px;
+
+}
+
+.nav-links a{
 
 color:white;
 
 text-decoration:none;
 
-margin-left:20px;
-
 font-weight:bold;
 
 }
 
-nav a:hover{
+.nav-links a:hover{
 
 text-decoration:underline;
 
 }
 
-@media(max-width:768px){
+/* Hero */
 
-.navbar{
-
-flex-direction:column;
-
-}
-
-nav{
-
-margin-top:10px;
-
-}
-
-nav a{
-
-display:inline-block;
-
-margin:8px;
-
-}
-
-}
- .hero{
+.hero{
 
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 
 color:white;
 
-padding:70px 20px;
-
 text-align:center;
+
+padding:80px 20px;
 
 }
 
 .hero h1{
 
-font-size:42px;
+font-size:48px;
 
 margin-bottom:15px;
 
@@ -120,17 +115,17 @@ background:white;
 
 color:#2563eb;
 
-font-weight:bold;
-
-padding:14px 28px;
+padding:15px 35px;
 
 border:none;
 
 border-radius:10px;
 
+font-size:17px;
+
 cursor:pointer;
 
-font-size:16px;
+font-weight:bold;
 
 }
 
@@ -142,69 +137,142 @@ transition:.3s;
 
 }
 
+/* Search */
+
+.search{
+
+max-width:600px;
+
+margin:40px auto;
+
+padding:0 20px;
+
+}
+
+.search input{
+
+width:100%;
+
+padding:16px;
+
+font-size:17px;
+
+border:2px solid #2563eb;
+
+border-radius:12px;
+
+outline:none;
+
+}
+
+/* Responsive */
+
 @media(max-width:768px){
 
-.hero{
+.navbar{
 
-padding:50px 15px;
+flex-direction:column;
+
+}
+
+.nav-links{
+
+margin-top:15px;
+
+flex-wrap:wrap;
+
+justify-content:center;
 
 }
 
 .hero h1{
 
-font-size:30px;
+font-size:34px;
 
 }
 
 .hero p{
 
-font-size:16px;
+font-size:17px;
 
 }
 
-}   
-    .search-box{
-
-margin:30px auto;
-
-max-width:500px;
-
+}
+.tools-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px 8%;
 }
 
-.search-box input{
-
-width:100%;
-
-padding:15px;
-
-font-size:16px;
-
-border:2px solid #2563eb;
-
-border-radius:10px;
-
-outline:none;
-
-box-sizing:border-box;
-
-    }
-button:hover{
-  background:#1d4ed8;
+.tool-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+text-align:center;
+transition:.3s;
 }
+
+.tool-card:hover{
+transform:translateY(-5px);
+}
+
+.tool-card h3{
+margin-bottom:10px;
+}
+
+.tool-card p{
+margin-bottom:15px;
+color:#555;
+  }
+  .footer{
+background:#1e293b;
+color:white;
+text-align:center;
+padding:40px 20px;
+margin-top:50px;
+}
+
+.footer h2{
+margin-bottom:10px;
+}
+
+.footer p{
+margin:10px 0;
+}
+
+.footer-links{
+margin:20px 0;
+}
+
+.footer-links a{
+color:white;
+text-decoration:none;
+margin:0 10px;
+font-weight:bold;
+}
+
+.footer-links a:hover{
+text-decoration:underline;
+  }
 </style>
+
 </head>
-<body style="font-family:Arial; background:#eef4ff; text-align:center; padding:20px; margin:0;">
+
+<body>
+
 <header class="navbar">
 
 <div class="logo">
 
-🛠️ <b>PakToolsHub</b>
+🛠️ PakToolsHub
 
 </div>
 
-<nav>
+<div class="nav-links">
 
-<a href="index.html">Home</a>
+<a href="#">Home</a>
 
 <a href="#tools">Tools</a>
 
@@ -212,251 +280,240 @@ button:hover{
 
 <a href="contact.html">Contact</a>
 
-</nav>
-<body style="font-family:Arial; background:#eef4ff; text-align:center; padding:20px; margin:0;">
-
-<header class="navbar">
-
-<div class="logo">
-🛠️ <b>PakToolsHub</b>
 </div>
-
-
 
 </header>
 
 <section class="hero">
 
-<h1>🚀 PakToolsHub</h1>
+<h1>Free Online Tools</h1>
 
-<p>100% Free Online PDF, Image & Calculator Tools</p>
+<p>PDF • Image • Calculator • Text Tools</p>
 
-<a href="#tools">
-<button>Explore Tools</button>
-</a>
+<button onclick="location.href='#tools'">
+
+Explore Tools
+
+</button>
 
 </section>
-<div class="search-box">
 
-<input type="text" id="searchTools" placeholder="🔍 Search Tools..." onkeyup="searchTools()">
+<div class="search">
+
+<input type="text"
+
+placeholder="🔍 Search Tools..."
+
+id="searchBox">
 
 </div>
-<!-- یہاں سے آپ کے تمام Tool Cards شروع ہوں گے -->
+<div class="search">
+
+<input type="text"
+placeholder="🔍 Search Tools..."
+id="searchBox">
+
+</div>
+<!<section style="padding:20px;text-align:center;">
+
+<h2>⭐ Featured Tools</h2>
+
+<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px;margin-top:20px;">
+
+<div class="tool-card">
+<h3>📄 PDF Merger</h3>
+<p>Merge multiple PDFs instantly.</p>
+<a href="pdf-merger.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🖼️ Image Compressor</h3>
+<p>Compress images online.</p>
+<a href="image-compressor.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>📄 PDF to JPG</h3>
+<p>Convert PDF pages to JPG.</p>
+<a href="pdf-to-jpg.html"><button>Open Tool</button></a>
+</div>
+
+</div>
+
+</section>
+
+<section style="padding:20px;">
+
+<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px;">
+
+<div style="background:white;padding:20px;border-radius:12px;width:220px;box-shadow:0 4px 10px rgba(0,0,0,.1);">
+<h2>15+</h2>
+<p>Free Tools</p>
+</div>
+
+<div style="background:white;padding:20px;border-radius:12px;width:220px;box-shadow:0 4px 10px rgba(0,0,0,.1);">
+<h2>100%</h2>
+<p>Free to Use</p>
+</div>
+
+<div style="background:white;padding:20px;border-radius:12px;width:220px;box-shadow:0 4px 10px rgba(0,0,0,.1);">
+<h2>24/7</h2>
+<p>Available</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- Our Tools -->
+
+<section id="tools" style="padding:40px 20px;">
+
+<h2 style="text-align:center;margin-bottom:30px;">🛠️ Our Free Tools</h2>
+
+<div class="tools-grid">
+
+<div class="tool-card">
+<h3>📝 Word Counter</h3>
+<p>Count words and characters instantly.</p>
+<a href="word-counter.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>📅 Age Calculator</h3>
+<p>Calculate your exact age.</p>
+<a href="age-calculator.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🔐 Password Generator</h3>
+<p>Create secure passwords.</p>
+<a href="password-generator.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>📊 Percentage Calculator</h3>
+<p>Calculate percentages instantly.</p>
+<a href="percentage-calculator.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>⚖️ BMI Calculator</h3>
+<p>Calculate BMI easily.</p>
+<a href="bmi-calculator.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🖼️ Image Compressor</h3>
+<p>Compress images online.</p>
+<a href="image-compressor.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🖼️ Image Resizer</h3>
+<p>Resize images instantly.</p>
+<a href="image-resizer.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>📄 PDF Merger</h3>
+<p>Merge PDF files.</p>
+<a href="pdf-merger.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>✂️ PDF Splitter</h3>
+<p>Split PDF pages.</p>
+<a href="pdf-splitter.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>📄 PDF to JPG</h3>
+<p>Convert PDF into JPG.</p>
+<a href="pdf-to-jpg.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🖼️ Image to PDF</h3>
+<p>Convert images into PDF.</p>
+<a href="image-to-pdf.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>📏 Unit Converter</h3>
+<p>Convert all units.</p>
+<a href="unit-converter.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>💱 Currency Converter</h3>
+<p>Convert currencies.</p>
+<a href="currency-converter.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🔤 Text Case Converter</h3>
+<p>Convert text cases.</p>
+<a href="text-case-converter.html"><button>Open Tool</button></a>
+</div>
+
+<div class="tool-card">
+<h3>🔳 QR Code Generator</h3>
+<p>Create QR Codes.</p>
+<a href="qr-generator.html"><button>Open Tool</button></a>
+</div>
+
+</div>
+
+</section>
+
+<script>
+
+const searchBox = document.getElementById("searchBox");
+
+searchBox.addEventListener("keyup", function(){
+
+let value = searchBox.value.toLowerCase();
+
+let cards = document.querySelectorAll(".tool-card");
+
+cards.forEach(function(card){
+
+if(card.innerText.toLowerCase().includes(value)){
+
+card.style.display="block";
+
+}else{
+
+card.style.display="none";
+
+}
+
+});
+
+});
+
+  </script>
+ <footer style="background:#1e293b;color:white;padding:40px 20px;margin-top:50px;">
+
+<h2>🛠️ PakToolsHub</h2>
+
+<p>Your Free Online PDF, Image & Calculator Tools</p>
 
 <br>
-<div style="max-width:700px; margin:auto; background:white; padding:25px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
 
-<h2>📝 Word Counter Tool</h2>
-  <p style="color:#666;">
-Count words and characters instantly for free.
-  </p>
+<a href="about.html" style="color:white;margin:10px;">About</a>
 
-<textarea id="text" placeholder="Type or paste your text here..."
-style="width:90%; height:200px; padding:10px; font-size:16px;"
-oninput="countWords()"></textarea>
+<a href="contact.html" style="color:white;margin:10px;">Contact</a>
+
+<a href="privacy.html" style="color:white;margin:10px;">Privacy Policy</a>
+
+<a href="terms.html" style="color:white;margin:10px;">Terms</a>
 
 <br><br>
 
-<button onclick="copyText()">📋 Copy Text</button>
-<button onclick="clearText()">🗑️ Clear</button>
+<p>© 2026 PakToolsHub. All Rights Reserved.</p>
 
-<h3>Words: <span id="words">0</span></h3>
-<h3>Characters: <span id="characters">0</span></h3>
-
-</div>
-
-
-<script>
-function countWords(){
-let text=document.getElementById("text").value;
-let words=text.trim()===""?0:text.trim().split(/\s+/).length;
-document.getElementById("words").innerHTML=words;
-document.getElementById("characters").innerHTML=text.length;
-}
-function copyText(){
-  let text = document.getElementById("text");
-  text.select();
-  document.execCommand("copy");
-  alert("Text Copied!");
-}
-
-function clearText(){
-  document.getElementById("text").value = "";
-  countWords();
-} 
-</script>
-<h2>Our Free Tools</h2>
-
-<div style="display:flex; justify-content:center; flex-wrap:wrap; gap:20px; margin:20px;">
-
-<div style="width:220px; background:white; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-<h3>📝 Word Counter</h3>
-<p>Count words and characters instantly.</p>
-<button>Open Tool</button>
-</div>
-
-<div style="width:220px; background:white; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-<h3>📅 Age Calculator</h3>
-<p>Calculate your exact age in seconds.</p>
-<a href="age-calculator.html">
-    <button>Open Tool</button>
-</a>
-</div>
-<div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-  <h3>🔐 Password Generator</h3>
-  <p>Create a strong and secure password instantly.</p>
-  <a href="password-generator.html">
-    <button>Open Tool</button>
-  </a>
-</div>
-<div style="width:220px; background:white; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-<h3>🖼️ Image Compressor</h3>
-
-<p>Compress JPG, PNG & WebP images online.</p>
-
-<a href="image-compressor.html">
-<button>Open Tool</button>
-</a>
-
-</div>
-  
-<div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-  <h3>🔳 QR Code Generator</h3>
-  <p>Create QR codes for text and URLs instantly.</p>
-
-  <a href="qr-generator.html">
-    <button>Open Tool</button>
-  </a>
-</div>
-  <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-<h3>🔤 Text Case Converter</h3>
-<p>Convert text to UPPERCASE, lowercase and Title Case.</p>
-
-<a href="text-case-converter.html">
-<button>Open Tool</button>
-</a>
-</div>
-  <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-<h3>⚖️ BMI Calculator</h3>
-
-<p>Calculate your BMI, ideal weight and daily calorie needs.</p>
-
-<a href="bmi-calculator.html">
-<button>Open Tool</button>
-</a>
-
-</div>
- <div style="width:220px; background:white; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-<h3>📊 Percentage Calculator</h3>
-
-<p>Calculate percentages, discounts, GST, increases and decreases instantly.</p>
-
-<a href="percentage-calculator.html">
-<button>Open Tool</button>
-</a>
-
-</div>
- <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-
-<h3>🖼️ Image to PDF</h3>
-
-<p>Convert JPG, PNG and other images into a PDF instantly.</p>
-
-<a href="image-to-pdf.html">
-<button>Open Tool</button>
-</a>
-
-</div> 
-<div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-
-<h3>💱 Currency Converter</h3>
-
-<p>Convert currencies with live exchange rates instantly.</p>
-
-<a href="currency-converter.html">
-<button>Open Tool</button>
-</a>
-
-</div> 
-  <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-
-<h3>📄 PDF Merger</h3>
-
-<p>Merge multiple PDF files into one document instantly.</p>
-
-<a href="pdf-merger.html">
-<button>Open Tool</button>
-</a>
-
-  </div> 
- <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
-
-<h3>✂️ PDF Splitter</h3>
-
-<p>Split PDF pages quickly and download only the pages you need.</p>
-
-<a href="pdf-splitter.html">
-<button>Open Tool</button>
-</a>
-
- </div> 
-  
- <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
-<h3>📏 Unit Converter</h3>
-
-<p>Convert Length, Weight, Temperature, Area, Speed, Volume, Time & Storage units instantly.</p>
-
-<a href="unit-converter.html">
-<button>Open Tool</button>
-</a>
-
-</div>
-  
- <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;">
-
-<h3>🖼️ Image Resizer</h3>
-
-<p>Resize images online by changing width and height. Fast, free and mobile friendly.</p>
-
-<a href="image-resizer.html">
-<button>Open Tool</button>
-</a>
-
-  </div>
- 
- <div style="background:white; width:250px; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center;"> 
-
-<h3>📄 PDF to JPG</h3>
-
-<p>Convert PDF pages into high-quality JPG images. Fast, free and mobile friendly.</p>
-
-<a href="pdf-to-jpg.html">
-
-<button>Open Tool</button>
-
-</a>
-
-  </div>
-  function searchTools(){
-
-let input=document.getElementById("searchTools").value.toLowerCase();
-
-let cards=document.getElementsByClassName("tool-card");
-
-for(let i=0;i<cards.length;i++){
-
-let title=cards[i].innerText.toLowerCase();
-
-cards[i].style.display=title.includes(input)?"block":"none";
-
-}
-
-}
-</div>
-</body>
-  <hr>
-
-<p style="color:gray;">
-© 2026 PakToolsHub | Free Online Tools
-</p>
+</footer> 
+  </body>
 </html>

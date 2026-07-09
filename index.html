@@ -163,6 +163,31 @@ font-size:16px;
 }
 
 }   
+    .search-box{
+
+margin:30px auto;
+
+max-width:500px;
+
+}
+
+.search-box input{
+
+width:100%;
+
+padding:15px;
+
+font-size:16px;
+
+border:2px solid #2563eb;
+
+border-radius:10px;
+
+outline:none;
+
+box-sizing:border-box;
+
+    }
 button:hover{
   background:#1d4ed8;
 }
@@ -196,12 +221,7 @@ button:hover{
 🛠️ <b>PakToolsHub</b>
 </div>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="#tools">Tools</a>
-<a href="about.html">About</a>
-<a href="contact.html">Contact</a>
-</nav>
+
 
 </header>
 
@@ -216,7 +236,11 @@ button:hover{
 </a>
 
 </section>
+<div class="search-box">
 
+<input type="text" id="searchTools" placeholder="🔍 Search Tools..." onkeyup="searchTools()">
+
+</div>
 <!-- یہاں سے آپ کے تمام Tool Cards شروع ہوں گے -->
 
 <br>
@@ -413,6 +437,21 @@ function clearText(){
 </a>
 
   </div>
+  function searchTools(){
+
+let input=document.getElementById("searchTools").value.toLowerCase();
+
+let cards=document.getElementsByClassName("tool-card");
+
+for(let i=0;i<cards.length;i++){
+
+let title=cards[i].innerText.toLowerCase();
+
+cards[i].style.display=title.includes(input)?"block":"none";
+
+}
+
+}
 </div>
 </body>
   <hr>

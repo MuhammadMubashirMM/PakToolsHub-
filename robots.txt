@@ -2,4 +2,4 @@ User-agent: *
 
 Allow: /
 
-Sitemap: https://www.paktoolshub.com/sitemap.xml
+Sitemap: https://pak-tools-hub-mocha.vercel.app/sitemap.xml

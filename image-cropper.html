@@ -188,7 +188,12 @@ or Click to Upload
 <button onclick="rotateLeft()">↩ Rotate Left</button>
 
 <button onclick="rotateRight()">↪ Rotate Right</button>
+<button onclick="flipHorizontal()">↔ Flip Horizontal</button>
 
+<button onclick="flipVertical()">↕ Flip Vertical</button>
+  <button onclick="undoCrop()">↩ Undo</button>
+
+<button onclick="redoCrop()">↪ Redo</button>
 <button onclick="resetImage()">♻ Reset</button>
 <select id="format">
 <option value="png">PNG</option>
@@ -205,7 +210,10 @@ or Click to Upload
 <script>
 
 let cropper;
-
+let scaleX = 1;
+let scaleY = 1;
+  let history = [];
+let historyIndex = -1;
 const image=document.getElementById("image");
 
 document.getElementById("inputImage").addEventListener("change",function(e){
@@ -234,9 +242,14 @@ viewMode:1,
 
 autoCropArea:1,
 
-responsive:true
+responsive:true, 
+  crop(event){
 
-});
+history.push(cropper.getData());
+
+historyIndex = history.length - 1;
+
+  }
 document.getElementById("ratio").addEventListener("change", function () {
 
 if(!cropper) return;
@@ -305,7 +318,48 @@ link.href=canvas.toDataURL("image/"+format);
 link.click();
 
 }
+function flipHorizontal(){
 
+if(!cropper) return;
+
+scaleX = scaleX * -1;
+
+cropper.scaleX(scaleX);
+
+}
+
+function flipVertical(){
+
+if(!cropper) return;
+
+scaleY = scaleY * -1;
+
+cropper.scaleY(scaleY);
+
+   }
+  function undoCrop(){
+
+if(historyIndex>0){
+
+historyIndex--;
+
+cropper.setData(history[historyIndex]);
+
+}
+
+}
+
+function redoCrop(){
+
+if(historyIndex<history.length-1){
+
+historyIndex++;
+
+cropper.setData(history[historyIndex]);
+
+}
+
+  }
 </script>
 
 </body>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Cropper - PakToolsHub</title>
+
+<meta name="description" content="Crop images online for free. Fast, secure and mobile friendly Image Cropper by PakToolsHub.">
+
+<meta name="keywords" content="Image Cropper, Crop Image Online, PNG Crop, JPG Crop, PakToolsHub">
+
+<meta name="author" content="PakToolsHub">
+
+<meta name="robots" content="index, follow">
+
+<!-- Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FYG8GY51CH"></script>
+
+<script>
+
+window.dataLayer=window.dataLayer||[];
+
+function gtag(){dataLayer.push(arguments);}
+
+gtag('js',new Date());
+
+gtag('config','G-FYG8GY51CH');
+
+</script>
+
+<!-- Cropper CSS -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#eef4ff;
+}
+
+.container{
+max-width:900px;
+margin:30px auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+text-align:center;
+}
+
+h1{
+color:#2563eb;
+margin-bottom:10px;
+}
+
+p{
+color:#666;
+margin-bottom:20px;
+}
+
+.upload-box{
+border:2px dashed #2563eb;
+padding:25px;
+border-radius:12px;
+background:#f8fbff;
+cursor:pointer;
+margin-bottom:20px;
+}
+
+input[type=file]{
+display:none;
+}
+
+#image{
+max-width:100%;
+display:block;
+margin:auto;
+}
+
+.buttons{
+margin-top:20px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+margin:6px;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+.download{
+background:#16a34a;
+}
+
+.download:hover{
+background:#15803d;
+}
+
+@media(max-width:768px){
+
+.container{
+margin:15px;
+padding:18px;
+}
+
+button{
+width:100%;
+margin:8px 0;
+}
+
+  }
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🖼️ Image Cropper Pro</h1>
+
+<p>Upload your image, crop it, rotate it and download instantly.</p>
+
+<label class="upload-box">
+
+📤 Click to Upload Image
+
+<input type="file" id="inputImage" accept="image/*">
+
+</label>
+
+<div>
+
+<img id="image">
+
+</div>
+
+<div class="buttons">
+
+<button onclick="zoomIn()">🔍 Zoom In</button>
+
+<button onclick="zoomOut()">🔎 Zoom Out</button>
+
+<button onclick="rotateLeft()">↩ Rotate Left</button>
+
+<button onclick="rotateRight()">↪ Rotate Right</button>
+
+<button onclick="resetImage()">♻ Reset</button>
+
+<button class="download" onclick="downloadImage()">⬇ Download</button>
+
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+<script>
+
+let cropper;
+
+const image=document.getElementById("image");
+
+document.getElementById("inputImage").addEventListener("change",function(e){
+
+const file=e.target.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=function(event){
+
+image.src=event.target.result;
+
+if(cropper){
+
+cropper.destroy();
+
+}
+
+image.onload=function(){
+
+cropper=new Cropper(image,{
+
+viewMode:1,
+
+autoCropArea:1,
+
+responsive:true
+
+});
+
+};
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+function zoomIn(){
+
+if(cropper) cropper.zoom(0.1);
+
+}
+
+function zoomOut(){
+
+if(cropper) cropper.zoom(-0.1);
+
+}
+
+function rotateLeft(){
+
+if(cropper) cropper.rotate(-90);
+
+}
+
+function rotateRight(){
+
+if(cropper) cropper.rotate(90);
+
+}
+
+function resetImage(){
+
+if(cropper) cropper.reset();
+
+}
+
+function downloadImage(){
+
+if(!cropper)return;
+
+const canvas=cropper.getCroppedCanvas();
+
+const link=document.createElement("a");
+
+link.download="cropped-image.png";
+
+link.href=canvas.toDataURL();
+
+link.click();
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -141,7 +141,17 @@ margin:8px 0;
 
 <p>Upload your image, crop it, rotate it and download instantly.</p>
 
-<label class="upload-box">
+<label class="upload-box" id="dropArea">
+
+📤 Drag & Drop Image Here
+
+<br><br>
+
+or Click to Upload
+
+<input type="file" id="inputImage" accept="image/*">
+
+</label> 
 
 📤 Click to Upload Image
 
@@ -154,7 +164,21 @@ margin:8px 0;
 <img id="image">
 
 </div>
+<div class="controls">
 
+<select id="ratio">
+
+<option value="NaN">Free Crop</option>
+
+<option value="1">1 : 1</option>
+
+<option value="1.7777778">16 : 9</option>
+
+<option value="1.3333333">4 : 3</option>
+
+</select>
+
+</div>
 <div class="buttons">
 
 <button onclick="zoomIn()">🔍 Zoom In</button>
@@ -166,7 +190,10 @@ margin:8px 0;
 <button onclick="rotateRight()">↪ Rotate Right</button>
 
 <button onclick="resetImage()">♻ Reset</button>
-
+<select id="format">
+<option value="png">PNG</option>
+<option value="jpeg">JPG</option>
+</select>
 <button class="download" onclick="downloadImage()">⬇ Download</button>
 
 </div>
@@ -210,7 +237,19 @@ autoCropArea:1,
 responsive:true
 
 });
+document.getElementById("ratio").addEventListener("change", function () {
 
+if(!cropper) return;
+
+let value=this.value;
+
+if(value==="NaN"){
+cropper.setAspectRatio(NaN);
+}else{
+cropper.setAspectRatio(parseFloat(value));
+}
+
+}); 
 };
 
 };
@@ -251,15 +290,17 @@ if(cropper) cropper.reset();
 
 function downloadImage(){
 
-if(!cropper)return;
+if(!cropper) return;
+
+const format=document.getElementById("format").value;
 
 const canvas=cropper.getCroppedCanvas();
 
 const link=document.createElement("a");
 
-link.download="cropped-image.png";
+link.download="cropped-image."+format;
 
-link.href=canvas.toDataURL();
+link.href=canvas.toDataURL("image/"+format);
 
 link.click();
 

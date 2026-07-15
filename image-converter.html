@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Converter - JPG, PNG & WEBP | PakToolsHub</title>
+
+<meta name="description" content="Convert JPG, PNG and WEBP images online for free. Fast, secure and mobile-friendly Image Converter by PakToolsHub.">
+
+<meta name="keywords" content="Image Converter, JPG to PNG, PNG to JPG, WEBP Converter, Image Tools, PakToolsHub">
+
+<meta name="author" content="PakToolsHub">
+
+<meta name="robots" content="index, follow">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FYG8GY51CH"></script>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-FYG8GY51CH');
+</script>
+  <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+padding:20px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+background:#fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#2563eb;
+font-size:32px;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#666;
+margin-bottom:25px;
+}
+
+.upload-box{
+border:3px dashed #2563eb;
+border-radius:15px;
+padding:35px;
+text-align:center;
+cursor:pointer;
+background:#f8fbff;
+transition:.3s;
+}
+
+.upload-box:hover{
+background:#eef5ff;
+}
+
+.upload-box input{
+display:none;
+}
+
+.preview{
+display:none;
+margin-top:20px;
+text-align:center;
+}
+
+.preview img{
+max-width:100%;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+select,
+button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+}
+
+select{
+border:2px solid #2563eb;
+background:#fff;
+}
+
+button{
+background:#2563eb;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#1749b5;
+}
+
+.info{
+margin-top:20px;
+padding:15px;
+background:#eef5ff;
+border-radius:10px;
+font-size:14px;
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:26px;
+}
+
+.container{
+padding:18px;
+}
+
+  }
+    </style>
+    <body>
+
+<div class="container">
+
+<h1>🖼️ Image Converter Pro</h1>
+
+<p class="subtitle">
+Convert JPG, PNG & WEBP images online for free.
+</p>
+
+<label class="upload-box" id="dropArea">
+
+📤 Drag & Drop Image Here
+
+<br><br>
+
+or Click to Upload
+
+<input type="file" id="imageInput" accept="image/*">
+
+</label>
+
+<div class="preview">
+
+<img id="previewImage">
+
+</div>
+
+<select id="format">
+
+<option value="image/png">PNG</option>
+
+<option value="image/jpeg">JPG</option>
+
+<option value="image/webp">WEBP</option>
+
+</select>
+
+<button id="convertBtn">
+🔄 Convert Image
+</button>
+
+<button id="downloadBtn" style="display:none;">
+⬇ Download Image
+</button>
+<button onclick="resetTool()">♻ Reset</button>
+
+<div class="info" id="info">
+No image selected.
+</div>
+
+
+</div> 
+      <script>
+
+const input=document.getElementById("imageInput");
+const preview=document.getElementById("previewImage");
+const previewBox=document.querySelector(".preview");
+const convertBtn=document.getElementById("convertBtn");
+const downloadBtn=document.getElementById("downloadBtn");
+const format=document.getElementById("format");
+const info=document.getElementById("info");
+
+let imageURL="";
+
+input.addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(!file) return;
+
+imageURL=URL.createObjectURL(file);
+
+preview.src=imageURL;
+
+previewBox.style.display="block";
+
+info.innerHTML=
+"📄 File: "+file.name+
+"<br>📦 Size: "+(file.size/1024).toFixed(2)+" KB";
+
+});
+
+convertBtn.addEventListener("click",function(){
+
+if(!preview.src){
+
+alert("Please upload an image.");
+
+return;
+
+}
+
+const canvas=document.createElement("canvas");
+
+const ctx=canvas.getContext("2d");
+
+const img=new Image();
+
+img.onload=function(){
+
+canvas.width=img.width;
+
+canvas.height=img.height;
+
+ctx.drawImage(img,0,0);
+
+const mime=format.value;
+
+const dataURL=canvas.toDataURL(mime);
+
+downloadBtn.style.display="block";
+
+downloadBtn.onclick=function(){
+
+const a=document.createElement("a");
+
+a.href=dataURL;
+
+if(mime==="image/png"){
+a.download="converted-image.png";
+}else if(mime==="image/webp"){
+a.download="converted-image.webp";
+}else{
+a.download="converted-image.jpg";
+}
+
+a.click();
+
+};
+
+};
+
+img.src=preview.src;
+
+});
+
+</script>
+
+</body>
+
+</html>

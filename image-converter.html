@@ -235,44 +235,27 @@ const info=document.getElementById("info");
 
 let imageURL="";
 
-input.addEventListener("change",function(){
-selectedFiles = [...this.files];
+input.addEventListener("change", function(){
 
-document.getElementById("fileCount").innerHTML =
-selectedFiles.length + " image(s) selected";
-const file=this.files[0];
+const file = this.files[0];
 
-if(!file) return;
+if(!file){
+return;
+}
 
-imageURL=URL.createObjectURL(file);
+imageURL = URL.createObjectURL(file);
 
-preview.src=imageURL;
+preview.src = imageURL;
+previewBox.style.display = "block";
 
-previewBox.style.display="block";
+info.innerHTML =
+"📄 File: " + file.name +
+"<br>📦 Size: " + (file.size/1024).toFixed(2) + " KB" +
+"<br>🖼 Format: " + file.type;
 
-
-img.src = URL.createObjectURL(file);
-
-} 
-
-img.onload = function(){
-
-info.innerHTML=
-"📄 File: "+file.name+
-"<br>📦 Size: "+(file.size/1024).toFixed(2)+" KB"+
-"<br>📐 Dimensions: "+img.width+" × "+img.height+" px"+
-"<br>🖼 Format: "+file.type;
-completed++;
-
-let percent = Math.round((completed / selectedFiles.length) * 100);
-
-progressBar.style.width = percent + "%";
-progressText.innerHTML = percent + "%";
-  
-};
-
-img.src=imageURL; 
 });
+
+
 convertBtn.addEventListener("click",function(){
 
 if(!preview.src){

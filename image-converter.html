@@ -300,7 +300,19 @@ a.click();
 img.src=preview.src;
 
 });
+function resetTool(){
 
+document.getElementById("imageInput").value = "";
+
+preview.src = "";
+
+previewBox.style.display = "none";
+
+downloadBtn.style.display = "none";
+
+info.innerHTML = "No image selected.";
+
+}
 </script>
 
 </body>

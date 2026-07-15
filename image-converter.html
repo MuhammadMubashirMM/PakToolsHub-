@@ -176,7 +176,7 @@ Convert JPG, PNG & WEBP images online for free.
 
 <p>or Click to Choose Image</p>
 
-<input type="file" id="imageInput" accept="image/*" multiple >
+<input type="file" id="imageInput" accept="image/*">
 
 </label>
   <div id="fileCount" style="margin:15px 0;font-weight:bold;color:#2563eb;">
@@ -237,7 +237,7 @@ const format=document.getElementById("format");
 const info=document.getElementById("info");
 
 let imageURL="";
-let selectedFiles = [];
+
 input.addEventListener("change",function(){
 selectedFiles = [...this.files];
 
@@ -252,28 +252,7 @@ imageURL=URL.createObjectURL(file);
 preview.src=imageURL;
 
 previewBox.style.display="block";
-const zip = new JSZip();
-for (let file of selectedFiles) {
 
-const img = new Image();
-
-img.onload = function(){
-
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = img.width;
-canvas.height = img.height;
-
-ctx.drawImage(img,0,0);
-
-const mime = format.value;
-
-const dataURL = canvas.toDataURL(mime);
-
-// اگلے Step میں یہاں ZIP میں Add کریں گے
-
-};
 
 img.src = URL.createObjectURL(file);
 

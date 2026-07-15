@@ -271,11 +271,7 @@ let percent = Math.round((completed / selectedFiles.length) * 100);
 
 progressBar.style.width = percent + "%";
 progressText.innerHTML = percent + "%";
-  if (completed === selectedFiles.length) {
-
-progressText.innerHTML = "✅ Conversion Complete!";
-
-  }
+  
 };
 
 img.src=imageURL; 

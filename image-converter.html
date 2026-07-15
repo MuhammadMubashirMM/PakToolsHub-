@@ -324,10 +324,6 @@ const canvas=document.createElement("canvas");
 
 const ctx=canvas.getContext("2d");
 
-const mime = format.value;
-
-for (const file of selectedFiles){
-
 const img = new Image();
 
 img.onload = function(){
@@ -337,15 +333,33 @@ canvas.height = img.height;
 
 ctx.drawImage(img,0,0);
 
+const mime = format.value;
+
 const dataURL = canvas.toDataURL(mime);
 
-// اگلے Step میں یہاں ZIP میں Add کریں
+downloadBtn.style.display = "block";
+
+downloadBtn.onclick = function(){
+
+const a = document.createElement("a");
+
+a.href = dataURL;
+
+if(mime==="image/png"){
+a.download="converted-image.png";
+}else if(mime==="image/webp"){
+a.download="converted-image.webp";
+}else{
+a.download="converted-image.jpg";
+}
+
+a.click();
 
 };
 
-img.src = URL.createObjectURL(file);
+};
 
-  }
+img.src = preview.src;
 
 
 });

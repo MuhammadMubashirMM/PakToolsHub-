@@ -69,12 +69,15 @@ background:#f8fbff;
 transition:.3s;
 }
 
-.upload-box:hover{
-background:#eef5ff;
+.upload-box h3{
+margin:10px 0;
+color:#2563eb;
+font-size:22px;
 }
 
-.upload-box input{
-display:none;
+.upload-box p{
+color:#666;
+font-size:16px;
 }
 
 .preview{
@@ -148,16 +151,15 @@ Convert JPG, PNG & WEBP images online for free.
 
 <label class="upload-box" id="dropArea">
 
-📤 Drag & Drop Image Here
+<div style="font-size:55px;">📤</div>
 
-<br><br>
+<h3>Drag & Drop Image Here</h3>
 
-or Click to Upload
+<p>or Click to Choose Image</p>
 
 <input type="file" id="imageInput" accept="image/*">
 
 </label>
-
 <div class="preview">
 
 <img id="previewImage">
@@ -213,10 +215,19 @@ preview.src=imageURL;
 
 previewBox.style.display="block";
 
+const img = new Image();
+
+img.onload = function(){
+
 info.innerHTML=
 "📄 File: "+file.name+
-"<br>📦 Size: "+(file.size/1024).toFixed(2)+" KB";
+"<br>📦 Size: "+(file.size/1024).toFixed(2)+" KB"+
+"<br>📐 Dimensions: "+img.width+" × "+img.height+" px"+
+"<br>🖼 Format: "+file.type;
 
+};
+
+img.src=imageURL; 
 });
 
 convertBtn.addEventListener("click",function(){

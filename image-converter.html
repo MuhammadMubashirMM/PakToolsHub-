@@ -156,6 +156,8 @@ padding:18px;
 
   }
     </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
     <body>
 
 <div class="container">
@@ -174,9 +176,12 @@ Convert JPG, PNG & WEBP images online for free.
 
 <p>or Click to Choose Image</p>
 
-<input type="file" id="imageInput" accept="image/*">
+<input type="file" id="imageInput" accept="image/*" multiple >
 
 </label>
+  <div id="fileCount" style="margin:15px 0;font-weight:bold;color:#2563eb;">
+No images selected
+  </div>
 <div class="preview">
 
 <img id="previewImage">
@@ -196,7 +201,17 @@ Convert JPG, PNG & WEBP images online for free.
 <button id="convertBtn">
 🔄 Convert Image
 </button>
+<div id="progressContainer" style="display:none;margin-top:20px;">
 
+<div style="width:100%;height:18px;background:#ddd;border-radius:10px;overflow:hidden;">
+
+<div id="progressBar" style="width:0%;height:100%;background:#2563eb;"></div>
+
+</div>
+
+<p id="progressText" style="text-align:center;">0%</p>
+
+</div>
 <button id="downloadBtn" style="display:none;">
 ⬇ Download Image
 </button>
@@ -215,13 +230,19 @@ const preview=document.getElementById("previewImage");
 const previewBox=document.querySelector(".preview");
 const convertBtn=document.getElementById("convertBtn");
 const downloadBtn=document.getElementById("downloadBtn");
+        const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
 const format=document.getElementById("format");
 const info=document.getElementById("info");
 
 let imageURL="";
-
+let selectedFiles = [];
 input.addEventListener("change",function(){
+selectedFiles = [...this.files];
 
+document.getElementById("fileCount").innerHTML =
+selectedFiles.length + " image(s) selected";
 const file=this.files[0];
 
 if(!file) return;
@@ -231,8 +252,32 @@ imageURL=URL.createObjectURL(file);
 preview.src=imageURL;
 
 previewBox.style.display="block";
+const zip = new JSZip();
+for (let file of selectedFiles) {
 
 const img = new Image();
+
+img.onload = function(){
+
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = img.width;
+canvas.height = img.height;
+
+ctx.drawImage(img,0,0);
+
+const mime = format.value;
+
+const dataURL = canvas.toDataURL(mime);
+
+// اگلے Step میں یہاں ZIP میں Add کریں گے
+
+};
+
+img.src = URL.createObjectURL(file);
+
+} 
 
 img.onload = function(){
 
@@ -241,14 +286,32 @@ info.innerHTML=
 "<br>📦 Size: "+(file.size/1024).toFixed(2)+" KB"+
 "<br>📐 Dimensions: "+img.width+" × "+img.height+" px"+
 "<br>🖼 Format: "+file.type;
+completed++;
 
+let percent = Math.round((completed / selectedFiles.length) * 100);
+
+progressBar.style.width = percent + "%";
+progressText.innerHTML = percent + "%";
+  if (completed === selectedFiles.length) {
+
+progressText.innerHTML = "✅ Conversion Complete!";
+
+  }
 };
 
 img.src=imageURL; 
 });
-
 convertBtn.addEventListener("click",function(){
+  progressContainer.style.display = "block";
+progressBar.style.width = "0%";
+progressText.innerHTML = "0%";
+if(selectedFiles.length===0){
 
+alert("Please select image(s) first.");
+
+return;
+
+}
 if(!preview.src){
 
 alert("Please upload an image.");
@@ -261,43 +324,29 @@ const canvas=document.createElement("canvas");
 
 const ctx=canvas.getContext("2d");
 
-const img=new Image();
+const mime = format.value;
 
-img.onload=function(){
+for (const file of selectedFiles){
 
-canvas.width=img.width;
+const img = new Image();
 
-canvas.height=img.height;
+img.onload = function(){
+
+canvas.width = img.width;
+canvas.height = img.height;
 
 ctx.drawImage(img,0,0);
 
-const mime=format.value;
+const dataURL = canvas.toDataURL(mime);
 
-const dataURL=canvas.toDataURL(mime);
-
-downloadBtn.style.display="block";
-
-downloadBtn.onclick=function(){
-
-const a=document.createElement("a");
-
-a.href=dataURL;
-
-if(mime==="image/png"){
-a.download="converted-image.png";
-}else if(mime==="image/webp"){
-a.download="converted-image.webp";
-}else{
-a.download="converted-image.jpg";
-}
-
-a.click();
+// اگلے Step میں یہاں ZIP میں Add کریں
 
 };
 
-};
+img.src = URL.createObjectURL(file);
 
-img.src=preview.src;
+  }
+
 
 });
 function resetTool(){

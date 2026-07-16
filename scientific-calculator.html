@@ -149,6 +149,8 @@ font-size:16px;
 <button id="copyBtn">📋 Copy Result</button>
   <button id="modeBtn">DEG</button>
   <button id="shareBtn">📤 Share Calculator</button>
+
+  <button id="themeBtn">🌙 Dark Mode</button>
 <div class="buttons">
 
 <button class="clear">AC</button>
@@ -233,7 +235,7 @@ let exp = expression
 .replace(/÷/g,"/")
 .replace(/×/g,"*")
 .replace(/π/g,Math.PI)
-.replace(/e/g,Math.E);
+.replace(/\be\b/g,Math.E);
 
 lastAnswer = eval(exp);
 
@@ -256,6 +258,10 @@ break;
 case "Ans":
 expression+=lastAnswer;
 display.value=expression;
+break;
+    case "EXP":
+expression += "e";
+display.value = expression;
 break;
 case "xʸ":
 
@@ -297,15 +303,13 @@ break;
 case "√":
 
 expression += "Math.sqrt(";
-display.value = expression;
+display.value = expression + ")";
 
 break;
 
 case "x²":
-
-expression += "**2";
+expression = "(" + expression + ")**2";
 display.value = expression;
-
 break;
 
 case "π":
@@ -324,38 +328,37 @@ break;
     case "sin":
 
 expression += "Math.sin(";
-display.value = expression;
-
+display.value = expression + ")"; 
 break;
 
 case "cos":
 
 expression += "Math.cos(";
-display.value = expression;
+display.value = expression + ")" ;
 
 break;
 
 case "tan":
 
 expression += "Math.tan(";
-display.value = expression;
+display.value = expression + ")" ;
 
 break;
 
 case "log":
 
 expression += "Math.log10(";
-display.value = expression;
+display.value = expression + ")" ;
 
 break;
 
 case "ln":
 
 expression += "Math.log(";
-display.value = expression;
+display.value = expression + ")" ;
 
 break;
-  default: 
+  default:
 expression+=value;
 display.value=expression;
 break;

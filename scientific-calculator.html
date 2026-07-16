@@ -293,7 +293,7 @@ expression = "";
 }
 
 break;
-default:
+
 case "√":
 
 expression += "Math.sqrt(";
@@ -355,9 +355,10 @@ expression += "Math.log(";
 display.value = expression;
 
 break;
+  default: 
 expression+=value;
 display.value=expression;
-
+break;
 }
 
 });

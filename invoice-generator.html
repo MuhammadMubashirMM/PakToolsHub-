@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Invoice Generator | PakToolsHub</title>
+
+<meta name="description" content="Create professional invoices online for free with PakToolsHub.">
+
+<meta name="keywords" content="Invoice Generator, Free Invoice Maker, Online Invoice, PakToolsHub">
+
+<meta name="author" content="PakToolsHub">
+<style>
+
+body{
+background:#f4f7fb;
+font-family:Arial,sans-serif;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+h1,p{
+text-align:center;
+}
+
+.card{
+background:#fff;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+table th,
+table td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+button{
+padding:12px;
+background:#2563eb;
+color:#fff;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+.deleteBtn{
+background:#dc2626;
+color:#fff;
+padding:6px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.deleteBtn:hover{
+background:#b91c1c;
+  }
+#grandTotal{
+margin-top:20px;
+color:#16a34a;
+}
+
+@media(max-width:768px){
+.row{
+grid-template-columns:1fr;
+}
+}
+
+
+</style>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FYG8GY51CH"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-FYG8GY51CH');
+</script>
+
+</head>
+
+<body>
+<div class="container">
+
+<h1>🧾 Invoice Generator</h1>
+<p>Create Professional Invoices for Free</p>
+
+<div class="card">
+
+<label>Company Name</label>
+<input type="text" id="company" placeholder="PakToolsHub">
+
+<label>Customer Name</label>
+<input type="text" id="customer" placeholder="Customer Name">
+
+<div class="row">
+
+<div>
+<label>Invoice No</label>
+<input type="text" id="invoiceNo" placeholder="INV-001">
+</div>
+
+<div>
+<label>Date</label>
+<input type="date" id="invoiceDate">
+</div>
+
+</div>
+
+<h2>Product Details</h2>
+
+<div class="row">
+
+<input type="text" id="product" placeholder="Product Name">
+
+<input type="number" id="qty" placeholder="Qty">
+
+<input type="number" id="price" placeholder="Price">
+
+<button id="addBtn">Add</button>
+
+</div>
+
+<table id="invoiceTable">
+
+<thead>
+
+<tr>
+<th>Product</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Total</th>
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+<label>Tax (%)</label>
+<input type="number" id="tax" value="0">
+
+<label>Discount (Rs.)</label>
+<input type="number" id="discount" value="0">
+<h2 id="grandTotal">Grand Total: Rs. 0</h2>
+
+<button id="printBtn">🖨 Print Invoice</button>
+
+</div>
+
+  </div>
+<script>
+
+let grandTotal = 0;
+
+const addBtn = document.getElementById("addBtn");
+const tbody = document.querySelector("#invoiceTable tbody");
+const grandTotalText = document.getElementById("grandTotal");
+
+addBtn.addEventListener("click", function(){
+
+const product = document.getElementById("product").value;
+const qty = Number(document.getElementById("qty").value);
+const price = Number(document.getElementById("price").value);
+
+if(product==="" || qty<=0 || price<=0){
+alert("Please fill all product details.");
+return;
+}
+
+const total = qty * price;
+grandTotal += total;
+const tax = Number(document.getElementById("tax").value);
+const discount = Number(document.getElementById("discount").value);
+
+let finalTotal = grandTotal + (grandTotal * tax / 100) - discount;
+
+grandTotalText.innerHTML = "Grand Total: Rs. " + finalTotal.toFixed(2);
+const row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${product}</td>
+<td>${qty}</td>
+<td>Rs. ${price}</td>
+<td>Rs. ${total}</td>
+<td><button class="deleteBtn">❌</button></td>
+`;
+const deleteBtn = row.querySelector(".deleteBtn");
+
+deleteBtn.addEventListener("click", function(){
+
+grandTotal -= total;
+
+row.remove();
+updateTotal();
+});
+
+tbody.appendChild(row);
+
+updateTotal();
+
+// Clear inputs
+document.getElementById("product").value="";
+document.getElementById("qty").value="";
+document.getElementById("price").value="";
+
+});
+
+document.getElementById("printBtn").addEventListener("click",function(){
+window.print();
+});
+document.getElementById("tax").addEventListener("input", updateTotal);
+document.getElementById("discount").addEventListener("input", updateTotal);
+
+function updateTotal(){
+
+const tax = Number(document.getElementById("tax").value);
+const discount = Number(document.getElementById("discount").value);
+
+let finalTotal = grandTotal + (grandTotal * tax / 100) - discount;
+
+grandTotalText.innerHTML = "Grand Total: Rs. " + finalTotal.toFixed(2);
+
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Watermark Tool | PakToolsHub</title>
+
+<meta name="description" content="Add text watermark to images online for free.">
+
+<meta name="keywords" content="Image Watermark, Watermark Tool, Online Image Editor">
+
+<meta name="robots" content="index,follow">
+
+<link rel="icon" href="favicon.png">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FYG8GY51CH"></script>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-FYG8GY51CH');
+</script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#eef4ff;
+}
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 8%;
+background:#2563eb;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#fff;
+}
+
+.hero{
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+color:#fff;
+text-align:center;
+padding:70px 20px;
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.container{
+max-width:900px;
+margin:40px auto;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+font-weight:bold;
+margin-bottom:8px;
+}
+
+input,
+select{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+}
+
+canvas{
+width:100%;
+max-width:100%;
+border:2px dashed #2563eb;
+border-radius:10px;
+margin-top:20px;
+}
+
+.btn{
+background:#2563eb;
+color:#fff;
+padding:12px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+margin-top:15px;
+}
+
+.btn:hover{
+background:#1d4ed8;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:32px;
+}
+
+.container{
+margin:20px;
+padding:20px;
+}
+
+  }
+</style>
+
+  </head>
+<body>
+
+<header class="navbar">
+<div class="logo">🛠️ PakToolsHub</div>
+</header>
+
+<section class="hero">
+
+<h1>🖼️ Image Watermark Tool</h1>
+
+<p>Add beautiful text watermarks to your images.</p>
+
+</section>
+<div class="container">
+
+<div class="input-group">
+<label>Select Image</label>
+<input type="file" id="imageInput" accept="image/*">
+</div>
+
+<div class="input-group">
+<label>Watermark Text</label>
+<input type="text" id="watermarkText" placeholder="Enter watermark">
+</div>
+
+<div class="input-group">
+<label>Font Size</label>
+<input type="range" id="fontSize" min="20" max="100" value="40">
+</div>
+<div class="input-group">
+<label>Font Color</label>
+<input type="color" id="fontColor" value="#ffffff">
+</div>
+
+<div class="input-group">
+<label>Opacity</label>
+<input type="range" id="opacity" min="0.1" max="1" step="0.1" value="0.6">
+</div>
+
+<div class="input-group">
+<label>Watermark Position</label>
+
+<select id="position">
+<option value="center">Center</option>
+<option value="top-left">Top Left</option>
+<option value="top-right">Top Right</option>
+<option value="bottom-left">Bottom Left</option>
+<option value="bottom-right">Bottom Right</option>
+</select>
+
+</div>
+
+<button class="btn" id="resetBtn">
+Reset
+</button>
+<button class="btn" id="downloadBtn">
+Download Image
+</button>
+
+<canvas id="canvas"></canvas>
+
+</div>
+</body>
+<script>
+const imageInput = document.getElementById("imageInput");
+const watermarkText = document.getElementById("watermarkText");
+const fontSize = document.getElementById("fontSize");
+const downloadBtn = document.getElementById("downloadBtn");
+const canvas = document.getElementById("canvas");
+
+const ctx = canvas.getContext("2d");
+
+let img = new Image();
+  const fontColor = document.getElementById("fontColor");
+const opacity = document.getElementById("opacity");
+const position = document.getElementById("position");
+const resetBtn = document.getElementById("resetBtn");
+  imageInput.addEventListener("change", function(e){
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+img.src = event.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+img.onload = function(){
+
+drawCanvas();
+
+};
+
+watermarkText.addEventListener("input", drawCanvas);
+
+fontSize.addEventListener("input", drawCanvas);
+fontColor.addEventListener("input", drawCanvas);
+opacity.addEventListener("input", drawCanvas);
+position.addEventListener("change", drawCanvas);
+function drawCanvas(){
+
+canvas.width = img.width;
+canvas.height = img.height;
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.drawImage(img,0,0);
+
+ctx.font = fontSize.value + "px Arial";
+
+const hex = fontColor.value;
+
+const r = parseInt(hex.substr(1,2),16);
+const g = parseInt(hex.substr(3,2),16);
+const b = parseInt(hex.substr(5,2),16);
+
+ctx.fillStyle = `rgba(${r},${g},${b},${opacity.value})`;
+
+let x = canvas.width/2;
+let y = canvas.height/2;
+
+ctx.textAlign="center";
+
+switch(position.value){
+
+case "top-left":
+x=20;
+y=40;
+ctx.textAlign="left";
+break;
+
+case "top-right":
+x=canvas.width-20;
+y=40;
+ctx.textAlign="right";
+break;
+
+case "bottom-left":
+x=20;
+y=canvas.height-20;
+ctx.textAlign="left";
+break;
+
+case "bottom-right":
+x=canvas.width-20;
+y=canvas.height-20;
+ctx.textAlign="right";
+break;
+
+default:
+x=canvas.width/2;
+y=canvas.height/2;
+ctx.textAlign="center";
+
+}
+
+ctx.fillText(watermarkText.value,x,y);
+
+}
+
+downloadBtn.addEventListener("click",function(){
+
+const link=document.createElement("a");
+
+link.download="watermarked-image.png";
+
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+});
+  resetBtn.addEventListener("click",function(){
+
+watermarkText.value="";
+fontSize.value=40;
+fontColor.value="#ffffff";
+opacity.value=0.6;
+position.value="center";
+
+drawCanvas();
+
+});
+</script>

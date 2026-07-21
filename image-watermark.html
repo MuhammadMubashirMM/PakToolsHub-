@@ -187,7 +187,16 @@ padding:20px;
 </select>
 
 </div>
-
+<div class="input-group">
+<label>
+<input type="checkbox" id="repeatWatermark">
+Repeat Watermark
+</label>
+</div>
+<div class="input-group">
+<label>Rotate Watermark</label>
+<input type="range" id="rotate" min="0" max="360" value="45">
+</div>  
 <button class="btn" id="resetBtn">
 Reset
 </button>
@@ -211,7 +220,9 @@ const ctx = canvas.getContext("2d");
 let img = new Image();
   const fontColor = document.getElementById("fontColor");
 const opacity = document.getElementById("opacity");
+  const rotate = document.getElementById("rotate");
 const position = document.getElementById("position");
+  const repeatWatermark = document.getElementById("repeatWatermark");
 const resetBtn = document.getElementById("resetBtn");
   imageInput.addEventListener("change", function(e){
 
@@ -242,7 +253,9 @@ watermarkText.addEventListener("input", drawCanvas);
 fontSize.addEventListener("input", drawCanvas);
 fontColor.addEventListener("input", drawCanvas);
 opacity.addEventListener("input", drawCanvas);
+  rotate.addEventListener("input", drawCanvas);
 position.addEventListener("change", drawCanvas);
+  repeatWatermark.addEventListener("change", drawCanvas);
 function drawCanvas(){
 
 canvas.width = img.width;
@@ -300,7 +313,31 @@ ctx.textAlign="center";
 
 }
 
+if(repeatWatermark.checked){
+
+for(let i=50;i<canvas.width;i+=200){
+
+for(let j=50;j<canvas.height;j+=150){
+
+ctx.save();
+
+ctx.translate(i,j);
+
+ctx.rotate(rotate.value * Math.PI / 180);
+
+ctx.fillText(watermarkText.value,0,0);
+
+ctx.restore();
+
+}
+
+}
+
+}else{
+
 ctx.fillText(watermarkText.value,x,y);
+
+}
 
 }
 

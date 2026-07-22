@@ -288,6 +288,7 @@ color:#555;
 
   </section>
   <script>
+    console.log("Script Loaded");
   const textInput = document.getElementById("textInput");
 
 const words = document.getElementById("words");
@@ -304,7 +305,7 @@ const shareBtn = document.getElementById("shareBtn");
 textInput.addEventListener("input", updateStats);
 
 function updateStats(){
-
+console.log("Typing...", textInput.value);
 const text = textInput.value;
 
 characters.innerHTML = text.length;

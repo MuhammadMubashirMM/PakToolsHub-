@@ -170,114 +170,8 @@ color:#555;
 }
 </style>
 </head> 
-<script>
-const textInput = document.getElementById("textInput");
 
-const words = document.getElementById("words");
-const characters = document.getElementById("characters");
-const sentences = document.getElementById("sentences");
-const paragraphs = document.getElementById("paragraphs");
-const readingTime = document.getElementById("readingTime");
-const speakingTime = document.getElementById("speakingTime");
-const copyBtn = document.getElementById("copyBtn");
-const clearBtn = document.getElementById("clearBtn");
-const downloadBtn = document.getElementById("downloadBtn");
-const uploadFile = document.getElementById("uploadFile");
-const shareBtn = document.getElementById("shareBtn");
-textInput.addEventListener("input", updateStats);
 
-function updateStats(){
-
-const text = textInput.value;
-
-characters.innerHTML = text.length;
-
-const wordArray = text.trim().split(/\s+/).filter(word => word.length > 0);
-const wordCount = wordArray.length;
-
-words.innerHTML = wordCount;
-
-const sentenceCount = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
-sentences.innerHTML = sentenceCount;
-
-const paragraphCount = text.split(/\n+/).filter(p => p.trim().length > 0).length;
-paragraphs.innerHTML = paragraphCount;
-
-readingTime.innerHTML = Math.max(1, Math.ceil(wordCount / 200)) + " min";
-
-speakingTime.innerHTML = Math.max(1, Math.ceil(wordCount / 130)) + " min";
-
-    }
-  copyBtn.addEventListener("click", function(){
-
-navigator.clipboard.writeText(textInput.value);
-
-alert("Text Copied!");
-
-});
-
-clearBtn.addEventListener("click", function(){
-
-textInput.value="";
-
-updateStats();
-
-});
-
-downloadBtn.addEventListener("click", function(){
-
-const blob = new Blob([textInput.value], {type:"text/plain"});
-
-const link = document.createElement("a");
-
-link.href = URL.createObjectURL(blob);
-
-link.download = "text.txt";
-
-link.click();
-
-});
-  uploadFile.addEventListener("change", function(e){
-
-const file = e.target.files[0];
-
-if(!file) return;
-
-const reader = new FileReader();
-
-reader.onload = function(event){
-
-textInput.value = event.target.result;
-
-updateStats();
-
-};
-
-reader.readAsText(file);
-
-});
-  shareBtn.addEventListener("click", async function(){
-
-const shareData = {
-title:"Word Counter - PakToolsHub",
-text:"Count words and characters online for free.",
-url:window.location.href
-};
-
-if(navigator.share){
-
-await navigator.share(shareData);
-
-}else{
-
-navigator.clipboard.writeText(window.location.href);
-
-alert("Tool link copied!");
-
-}
-
-});
- </script>
 <body>
 
 <header class="navbar">
@@ -393,6 +287,114 @@ alert("Tool link copied!");
 </div>
 
   </section>
+  <script>
+  const textInput = document.getElementById("textInput");
+
+const words = document.getElementById("words");
+const characters = document.getElementById("characters");
+const sentences = document.getElementById("sentences");
+const paragraphs = document.getElementById("paragraphs");
+const readingTime = document.getElementById("readingTime");
+const speakingTime = document.getElementById("speakingTime");
+const copyBtn = document.getElementById("copyBtn");
+const clearBtn = document.getElementById("clearBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+const uploadFile = document.getElementById("uploadFile");
+const shareBtn = document.getElementById("shareBtn");
+textInput.addEventListener("input", updateStats);
+
+function updateStats(){
+
+const text = textInput.value;
+
+characters.innerHTML = text.length;
+
+const wordArray = text.trim().split(/\s+/).filter(word => word.length > 0);
+const wordCount = wordArray.length;
+
+words.innerHTML = wordCount;
+
+const sentenceCount = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+sentences.innerHTML = sentenceCount;
+
+const paragraphCount = text.split(/\n+/).filter(p => p.trim().length > 0).length;
+paragraphs.innerHTML = paragraphCount;
+
+readingTime.innerHTML = Math.max(1, Math.ceil(wordCount / 200)) + " min";
+
+speakingTime.innerHTML = Math.max(1, Math.ceil(wordCount / 130)) + " min";
+
+    }
+  copyBtn.addEventListener("click", function(){
+
+navigator.clipboard.writeText(textInput.value);
+
+alert("Text Copied!");
+
+});
+
+clearBtn.addEventListener("click", function(){
+
+textInput.value="";
+
+updateStats();
+
+});
+
+downloadBtn.addEventListener("click", function(){
+
+const blob = new Blob([textInput.value], {type:"text/plain"});
+
+const link = document.createElement("a");
+
+link.href = URL.createObjectURL(blob);
+
+link.download = "text.txt";
+
+link.click();
+
+});
+  uploadFile.addEventListener("change", function(e){
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+textInput.value = event.target.result;
+
+updateStats();
+
+};
+
+reader.readAsText(file);
+
+});
+  shareBtn.addEventListener("click", async function(){
+
+const shareData = {
+title:"Word Counter - PakToolsHub",
+text:"Count words and characters online for free.",
+url:window.location.href
+};
+
+if(navigator.share){
+
+await navigator.share(shareData);
+
+}else{
+
+navigator.clipboard.writeText(window.location.href);
+
+alert("Tool link copied!");
+
+}
+
+});
+ </script>
 </body>
 
 </html>
